@@ -1,0 +1,19 @@
+{
+	"name": "wizofgoz/esir",
+	"description": "",
+	"require" : {
+		"php": "^5.3.3 || ^7.0",
+		"guzzlehttp/guzzle": "^6.2"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "4.7.*"
+	},
+	"suggest": {
+		"predis/predis": "Needed to support interacting with a Redis cache"
+	},
+	"autoload": {
+		"psr-4": {
+			"Esir\\": "src/"
+		}
+	}
+}
