@@ -3,10 +3,10 @@ namespace Esir\Manager\Session;
 class PHPSession implements CanStoreInterface
 {
 	const SESSION_STARTED = TRUE;
-    	const SESSION_NOT_STARTED = FALSE;
+    const SESSION_NOT_STARTED = FALSE;
     
-    	// The state of the session
-    	private $sessionState = self::SESSION_NOT_STARTED;
+    // The state of the session
+    private $sessionState = self::SESSION_NOT_STARTED;
 	
 	protected $name;
 	
@@ -18,13 +18,13 @@ class PHPSession implements CanStoreInterface
 	
 	protected $secure;
     
-    	public function __construct($name, $limit = 0, $path = '/', $domain = NULL, $secure = NULL)
+    public function __construct(array $config)
 	{
-		$this->name = $name;
-		$this->limit = $limit;
-		$this->path = $path;
-		$this->domain = $domain;
-		$this->secure = $secure;
+		$this->name = $config['name'];
+		$this->limit = $config['limit'];
+		$this->path = $config['path'];
+		$this->domain = $config['domain'];
+		$this->secure = $config['secure'];
 		$this->startSession();
 	}
     
@@ -36,9 +36,9 @@ class PHPSession implements CanStoreInterface
 	**/
     
    	public function startSession()
-    	{
-        	if ( $this->sessionState == self::SESSION_NOT_STARTED )
-        	{
+	{
+		if ( $this->sessionState == self::SESSION_NOT_STARTED )
+		{
 			// Set the cookie name before we start.
 			session_name($this->name . '_Session');
 		
@@ -50,7 +50,7 @@ class PHPSession implements CanStoreInterface
 		
 			// Set the cookie settings and start the session
 			session_set_cookie_params($this->limit, $this->path, $this->domain, $this->secure, true);
-            		$this->sessionState = session_start();
+            $this->sessionState = session_start();
 			
 			// Make sure the session hasn't expired, and destroy it if it has
 			if($this->validateSession())
@@ -77,9 +77,9 @@ class PHPSession implements CanStoreInterface
 				session_destroy();
 				session_start();
 			}
-        	}
+        }
         
-        	return $this->sessionState;
+        return $this->sessionState;
    	}
 	
 	protected function preventHijacking()

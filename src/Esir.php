@@ -1,6 +1,5 @@
 <?php
 namespace Esir;
-use \GuzzleHttp\Client;
 use \Esir\Manager\Manager;
 class Esir
 {
@@ -50,6 +49,26 @@ class Esir
 	{
 		$this->config = require_once(__DIR__.'/Config.php');
 		$this->manager = new Manager($this->config);
+	}
+	
+	public function getVersion()
+	{
+		return $this->version;
+	}
+	
+	public static function getAvailableScopes()
+	{
+		return Manager::scopes();
+	}
+	
+	/*
+	*	Authorizes the connection with the ESI API
+	*
+	*
+	*/
+	public function authorize($refresh = NULL)
+	{
+		$this->manager->authorize($refresh);
 	}
 	
 	/*
