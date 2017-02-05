@@ -1,5 +1,5 @@
 <?php
-namespace Esir\Core;
+namespace Esier\Core;
 class Universe extends Base
 {
 	

@@ -1,5 +1,5 @@
 <?php
-namespace Esir\Manager\Cache;
+namespace Esier\Manager\Cache;
 interface CanCacheInterface
 {
 	

@@ -1,5 +1,5 @@
 <?php
-namespace Esir\Manager;
+namespace Esier\Manager;
 use \GuzzleHttp\Client;
 class Manager
 {

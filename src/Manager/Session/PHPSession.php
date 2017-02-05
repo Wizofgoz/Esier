@@ -1,5 +1,5 @@
 <?php
-namespace Esir\Manager\Session;
+namespace Esier\Manager\Session;
 class PHPSession implements CanStoreInterface
 {
 	const SESSION_STARTED = TRUE;

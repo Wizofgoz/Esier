@@ -1,7 +1,7 @@
 <?php
-namespace Esir\Core;
-use \Esir\Exceptions\MemberAccessException;
-use \Esir\Core\CanCallAPIInterface;
+namespace Esier\Core;
+use \Esier\Exceptions\MemberAccessException;
+use \Esier\Core\CanCallAPIInterface;
 abstract class Base implements CanCallAPIInterface
 {
 	protected function checkArguments(array $args, $min, $max, $methodName) {

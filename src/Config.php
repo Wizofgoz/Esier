@@ -36,8 +36,8 @@ return array(
 	),
 	
 	'Cache' => array(
-		'Handler' => \Esir\Manager\Cache\PDO::class,
-		'Prefix' => 'esir_',
+		'Handler' => \Esier\Manager\Cache\PDO::class,
+		'Prefix' => 'esier_',
 	
 		//	Driver-specific configs
 		'PDO' => array(
@@ -50,11 +50,11 @@ return array(
 	),
 	
 	'Session' => array(
-		'Handler' => \Esir\Manager\Session\PHPSession::class,
+		'Handler' => \Esier\Manager\Session\PHPSession::class,
 	
 		//	Driver-specific configs
 		'PHPSession' => array(
-			'name' => 'esir',	//	prefix for session cookie
+			'name' => 'esier',	//	prefix for session cookie
 			'limit' => 0,		//	lifetime of session cookie (in seconds)
 			'path' => '/',		//	path on domain that session cookie is accessible
 			'domain' => NULL,	//	domain that session cookieis visible to

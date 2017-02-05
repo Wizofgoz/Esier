@@ -1,5 +1,5 @@
 <?php
-namespace Esir\Manager\Session;
+namespace Esier\Manager\Session;
 interface CanStoreInterface
 {
 	public function __construct($name, $limit = 0, $path = '/', $domain = NULL, $secure = NULL);

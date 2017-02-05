@@ -1,6 +1,6 @@
 <?php
-namespace Esir\Core;
-use \Esir\Core\Manager;
+namespace Esier\Core;
+use \Esier\Core\Manager;
 interface CanCallAPIInterface
 {
 	public function __construct(Manager $manager, array $args);

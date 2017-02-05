@@ -1,5 +1,5 @@
 {
-	"name": "wizofgoz/esir",
+	"name": "wizofgoz/esier",
 	"description": "",
 	"require" : {
 		"php": "^5.3.3 || ^7.0",
@@ -13,7 +13,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Esir\\": "src/"
+			"Esier\\": "src/"
 		}
 	}
 }
