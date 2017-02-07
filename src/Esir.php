@@ -86,6 +86,7 @@ class Esir
         if (!isset($this->classmap[$name])) {
             throw new Exception();
         }
+
         return new $name($this->manager, $arguments);
     }
 }

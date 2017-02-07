@@ -65,11 +65,12 @@ class PHPSession implements CanStoreInterface
                 } elseif (rand(1, 100) <= 5) {
                     $this->regenerateSession();
                 }
-				return $this->sessionState;
+
+                return $this->sessionState;
             }
-			$_SESSION = [];
-			session_destroy();
-			session_start();
+            $_SESSION = [];
+            session_destroy();
+            session_start();
         }
 
         return $this->sessionState;
