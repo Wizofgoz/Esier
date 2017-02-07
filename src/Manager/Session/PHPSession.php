@@ -48,7 +48,7 @@ class PHPSession implements CanStoreInterface
             $https = isset($this->secure) ? $this->secure : isset($_SERVER['HTTPS']);
 
             // Set the cookie settings and start the session
-            session_set_cookie_params($this->limit, $this->path, $this->domain, $this->secure, true);
+            session_set_cookie_params($this->limit, $this->path, $domain, $https, true);
             $this->sessionState = session_start();
 
             // Make sure the session hasn't expired, and destroy it if it has
@@ -65,11 +65,11 @@ class PHPSession implements CanStoreInterface
                 } elseif (rand(1, 100) <= 5) {
                     $this->regenerateSession();
                 }
-            } else {
-                $_SESSION = [];
-                session_destroy();
-                session_start();
+				return $this->sessionState;
             }
+			$_SESSION = [];
+			session_destroy();
+			session_start();
         }
 
         return $this->sessionState;

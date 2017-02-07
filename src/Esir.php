@@ -61,7 +61,7 @@ class Esir
 
     public static function getAvailableScopes()
     {
-        return Manager::scopes();
+        return array_keys(Manager::AVAILABLE_SCOPES);
     }
 
     /*
