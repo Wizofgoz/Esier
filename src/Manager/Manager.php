@@ -142,8 +142,8 @@ class Manager
                 'code'       => $authCode,
             ],
         ]);
-		$data = json_decode((string) $response, true);
-		if (!isset($data['access_token'])) {
+        $data = json_decode((string) $response, true);
+        if (!isset($data['access_token'])) {
             throw new Exception('');
         }
         $this->setCurrentToken($data['access_token']);
