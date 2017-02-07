@@ -54,11 +54,11 @@ class Manager
 
     protected $cache;
 
-    protected $current_token;
+    protected $currentToken;
 
-    protected $session_expire;
+    protected $sessionExpire;
 
-    protected $refresh_token;
+    protected $refreshToken;
 
     protected $authorized = false;
 
@@ -76,16 +76,6 @@ class Manager
     }
 
     /*
-    *	Returns array of available scopes
-    *
-    *	@return array
-    */
-    public static function scopes()
-    {
-        return array_keys(self::AVAILABLE_SCOPES);
-    }
-
-    /*
     *	Checks for a valid token in session store and redirects to SSO if none is found or uses the supplied refresh token
     *
     *	@param string $refresh
@@ -96,7 +86,7 @@ class Manager
     {
         //	if a refresh token was given, try a refresh
         if ($refresh !== null) {
-            $this->refresh_token = $refresh;
+            $this->refreshToken = $refresh;
             try {
                 $this->refresh();
                 $this->authorized = true;
@@ -131,7 +121,7 @@ class Manager
             'scope'         => implode(' ', $scopes),
             'state'         => '',
         ], null, null, PHP_QUERY_RFC3986);
-        header('Location: ');
+        header('Location: '.$url);
         exit;
     }
 
@@ -140,7 +130,7 @@ class Manager
     *
     *
     */
-    public function verify($auth_code)
+    public function verify($authCode)
     {
         $response = $this->client->request('POST', self::AUTH_URL, [
             'headers' => [
@@ -149,9 +139,16 @@ class Manager
             ],
             'json' => [
                 'grant_type' => 'authorization_code',
-                'code'       => $auth_code,
+                'code'       => $authCode,
             ],
         ]);
+        $data = json_decode((string) $response, true);
+        if (!isset($data['access_token'])) {
+            throw new Exception('');
+        }
+        $this->setCurrentToken($data['access_token']);
+        $this->setRefreshToken($data['refresh_token']);
+        $this->setExpiration(time() + $data['expires_in']);
     }
 
     /*
@@ -165,9 +162,9 @@ class Manager
         if (isset($this->session->{self::SESSION_TOKEN})) {
             //	check that token is valid
             if ($this->session->{self::SESSION_TOKEN_EXPIRE} < time()) {
-                $this->current_token = $this->session->{self::SESSION_TOKEN};
-                $this->session_expire = $this->session->{self::SESSION_TOKEN_EXPIRE};
-                $this->refresh_token = $this->session->{self::SESSION_REFRESH_TOKEN};
+                $this->currentToken = $this->session->{self::SESSION_TOKEN};
+                $this->sessionExpire = $this->session->{self::SESSION_TOKEN_EXPIRE};
+                $this->refreshToken = $this->session->{self::SESSION_REFRESH_TOKEN};
 
                 return true;
             }
@@ -194,16 +191,16 @@ class Manager
             ],
             'json' => [
                 'grant_type'    => 'refresh_token',
-                'refresh_token' => $this->refresh_token,
+                'refresh_token' => $this->refreshToken,
             ],
         ]);
-        $response = json_decode((string) $response, true);
-        if (!isset($response['access_token'])) {
+        $data = json_decode((string) $response, true);
+        if (!isset($data['access_token'])) {
             throw new Exception('');
         }
-        $this->setCurrentToken($response['access_token']);
-        $this->setRefreshToken($response['refresh_token']);
-        $this->setExpiration(time() + $response['expires_in']);
+        $this->setCurrentToken($data['access_token']);
+        $this->setRefreshToken($data['refresh_token']);
+        $this->setExpiration(time() + $data['expires_in']);
     }
 
     /*
@@ -213,7 +210,7 @@ class Manager
     */
     private function setExpiration($timestamp)
     {
-        $this->session_expire = $timestamp;
+        $this->sessionExpire = $timestamp;
         $this->session->{self::SESSION_TOKEN_EXPIRE} = $timestamp;
     }
 
@@ -224,7 +221,7 @@ class Manager
     */
     private function setCurrentToken($token)
     {
-        $this->current_token = $token;
+        $this->currentToken = $token;
         $this->session->{self::SESSION_TOKEN} = $token;
     }
 
@@ -235,7 +232,7 @@ class Manager
     */
     private function setRefreshToken($token)
     {
-        $this->refresh_token = $token;
+        $this->refreshToken = $token;
         $this->session->{self::SESSION_REFRESH_TOKEN} = $token;
     }
 

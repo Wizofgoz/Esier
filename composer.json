@@ -1,6 +1,8 @@
 {
 	"name": "wizofgoz/esier",
 	"description": "An easier to work with library for Eve Online's new ESI API",
+	"keywords": ["eve-online", "esi"],
+	"license": "MIT",
 	"require" : {
 		"php": ">=5.6.4",
 		"guzzlehttp/guzzle": "^6.2"
@@ -15,5 +17,10 @@
 		"psr-4": {
 			"Esier\\": "src/"
 		}
-	}
+	},
+	"autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
 }

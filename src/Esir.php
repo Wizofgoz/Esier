@@ -61,7 +61,7 @@ class Esir
 
     public static function getAvailableScopes()
     {
-        return Manager::scopes();
+        return array_keys(Manager::AVAILABLE_SCOPES);
     }
 
     /*
@@ -86,6 +86,7 @@ class Esir
         if (!isset($this->classmap[$name])) {
             throw new Exception();
         }
+
         return new $name($this->manager, $arguments);
     }
 }
