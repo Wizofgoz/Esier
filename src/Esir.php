@@ -6,18 +6,18 @@ use Esier\Manager\Manager;
 
 class Esir
 {
-	/*
-	*	Current version number
-	*
-	*	@var string
-	*/
+    /*
+    *	Current version number
+    *
+    *	@var string
+    */
     private $version = '0.0.1-alpha';
-	
-	/*
-	*	Mapping of class names to fully-qualified versions for easy calling
-	*
-	*	@var array
-	*/
+
+    /*
+    *	Mapping of class names to fully-qualified versions for easy calling
+    *
+    *	@var array
+    */
     private $classmap = [
         'Alliance'             => \Esier\Core\Alliance::class,
         'Assets'               => \Esier\Core\Assets::class,
@@ -45,11 +45,11 @@ class Esir
         'Wars'                 => \Esier\Core\Wars::class,
     ];
 
-	/*
-	*	Mapping of aliases of classes for shorthand
-	*
-	*	@var array
-	*/
+    /*
+    *	Mapping of aliases of classes for shorthand
+    *
+    *	@var array
+    */
     private $aliases = [
         'Char' => 'Character',
         'Corp' => 'Corporation',
@@ -59,46 +59,46 @@ class Esir
         'UI'   => 'UserInterface',
     ];
 
-	/*
-	*	Global configuration for the library
-	*
-	*	@var array
-	*/
+    /*
+    *	Global configuration for the library
+    *
+    *	@var array
+    */
     private $config;
 
-	/*
-	*	Manager object to maintain connection to the API
-	*
-	*	@var Esier\Manager\Manager
-	*/
+    /*
+    *	Manager object to maintain connection to the API
+    *
+    *	@var Esier\Manager\Manager
+    */
     private $manager;
 
-	/*
-	*	Initialize the library
-	*
-	*	@return void
-	*/
+    /*
+    *	Initialize the library
+    *
+    *	@return void
+    */
     public function __construct()
     {
         $this->config = require_once __DIR__.'/Config.php';
         $this->manager = new Manager($this->config);
     }
 
-	/*
-	*	Return the current version of the library
-	*
-	*	@return string
-	*/
+    /*
+    *	Return the current version of the library
+    *
+    *	@return string
+    */
     public function getVersion()
     {
         return $this->version;
     }
 
-	/*
-	*	Return array of known scopes
-	*
-	*	@return array
-	*/
+    /*
+    *	Return array of known scopes
+    *
+    *	@return array
+    */
     public static function getAvailableScopes()
     {
         return array_keys(Manager::AVAILABLE_SCOPES);
@@ -108,8 +108,8 @@ class Esir
     *	Authorizes the connection with the ESI API
     *
     *	@return void
-	*
-	*	@throws Esier\Exceptions\AuthorizationException
+    *
+    *	@throws Esier\Exceptions\AuthorizationException
     */
     public function authorize($refresh = null)
     {
@@ -120,11 +120,11 @@ class Esir
     *	Transfers all calls to the appropriate classes
     *
     *	@param string $name
-	*	@param array $arguments
-	*
-	*	@return Esier\Core\CanCallAPIInterface
-	*
-	*	@throws Esier\Exceptions\UnknownScopeException
+    *	@param array $arguments
+    *
+    *	@return Esier\Core\CanCallAPIInterface
+    *
+    *	@throws Esier\Exceptions\UnknownScopeException
     */
     public function __call($name, $arguments)
     {
