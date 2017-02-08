@@ -4,9 +4,9 @@ namespace Esier\Manager\Log;
 
 class NullLog implements CanLogInterface
 {
-	/*
-	*	Adds data to the normal log
-	*
+    /*
+    *	Adds data to the normal log
+    *
     * 	@param string $message
     *
     * 	@return mixed
@@ -14,10 +14,10 @@ class NullLog implements CanLogInterface
     public function log(string $message)
     {
     }
-	
+
     /*
-	*	Adds data to the debug log
-	*
+    *	Adds data to the debug log
+    *
     * 	@param string $message
     *
     * 	@return mixed
@@ -25,10 +25,10 @@ class NullLog implements CanLogInterface
     public function debug(string $message)
     {
     }
-	
+
     /*
-	*	Adds data to the warning log
-	*
+    *	Adds data to the warning log
+    *
     * 	@param string $message
     *
     * 	@return mixed
@@ -36,10 +36,10 @@ class NullLog implements CanLogInterface
     public function warning(string $message)
     {
     }
-	
+
     /*
-	*	Adds data to the error log
-	*
+    *	Adds data to the error log
+    *
     * 	@param string $message
     *
     * 	@return mixed

@@ -4,69 +4,69 @@ namespace Esier\Manager\Session;
 
 class PHPSession implements CanStoreInterface
 {
-	/*
-	*	State for declaring that the session has been started
-	*
-	*	@var boolean
-	*/
+    /*
+    *	State for declaring that the session has been started
+    *
+    *	@var boolean
+    */
     const SESSION_STARTED = true;
-	
-	/*
-	*	State for declaring that the session has not been started
-	*
-	*	@var boolean
-	*/
+
+    /*
+    *	State for declaring that the session has not been started
+    *
+    *	@var boolean
+    */
     const SESSION_NOT_STARTED = false;
 
     /*
-	*	The current state of the session
-	*
-	*	@var boolean
-	*/
+    *	The current state of the session
+    *
+    *	@var boolean
+    */
     private $sessionState = self::SESSION_NOT_STARTED;
 
-	/*
-	*	Name of the cookie to send the current Session ID in
-	*
-	*	@var string
-	*/
+    /*
+    *	Name of the cookie to send the current Session ID in
+    *
+    *	@var string
+    */
     protected $name;
 
-	/*
-	*	Time limit for the session to live between requests
-	*
-	*	@var integer
-	*/
+    /*
+    *	Time limit for the session to live between requests
+    *
+    *	@var integer
+    */
     protected $limit;
 
-	/*
-	*	Path on the domain where the cookie will work. use '/' for all paths
-	*
-	*	@var string
-	*/
+    /*
+    *	Path on the domain where the cookie will work. use '/' for all paths
+    *
+    *	@var string
+    */
     protected $path;
 
-	/*
-	*	Cookie domain. Prefix with . for all subdomains
-	*
-	*	@var string
-	*/
+    /*
+    *	Cookie domain. Prefix with . for all subdomains
+    *
+    *	@var string
+    */
     protected $domain;
 
-	/*
-	*	Whether cookie will only be sent over secure connections
-	*
-	*	@var boolean
-	*/
+    /*
+    *	Whether cookie will only be sent over secure connections
+    *
+    *	@var boolean
+    */
     protected $secure;
 
-	/*
-	*	Initialize values and start session
-	*
-	*	@param array $config
-	*
-	*	@return void
-	*/
+    /*
+    *	Initialize values and start session
+    *
+    *	@param array $config
+    *
+    *	@return void
+    */
     public function __construct(array $config)
     {
         $this->name = $config['name'];
@@ -123,11 +123,11 @@ class PHPSession implements CanStoreInterface
         return $this->sessionState;
     }
 
-	/*
-	*	Determine whether the session has been hijacked
-	*
-	*	@return boolean
-	*/
+    /*
+    *	Determine whether the session has been hijacked
+    *
+    *	@return boolean
+    */
     protected function preventHijacking()
     {
         if (!isset($_SESSION['IPaddress']) || !isset($_SESSION['userAgent'])) {
@@ -145,11 +145,11 @@ class PHPSession implements CanStoreInterface
         return true;
     }
 
-	/*
-	*	Refresh the session with a new ID to prevent attacks
-	*
-	*	@return void
-	*/
+    /*
+    *	Refresh the session with a new ID to prevent attacks
+    *
+    *	@return void
+    */
     protected function regenerateSession()
     {
         // If this session is obsolete it means there already is a new id
@@ -177,11 +177,11 @@ class PHPSession implements CanStoreInterface
         unset($_SESSION['EXPIRES']);
     }
 
-	/*
-	*	Checks whether the session has expired
-	*
-	*	@return boolean
-	*/
+    /*
+    *	Checks whether the session has expired
+    *
+    *	@return boolean
+    */
     protected function validateSession()
     {
         if (isset($_SESSION['OBSOLETE']) && !isset($_SESSION['EXPIRES'])) {
@@ -222,25 +222,25 @@ class PHPSession implements CanStoreInterface
         }
     }
 
-	/*
-	*	Checks whether a value is stored in the session
-	*
-	*	@param string $name
-	*
-	*	@return boolean
-	*/
+    /*
+    *	Checks whether a value is stored in the session
+    *
+    *	@param string $name
+    *
+    *	@return boolean
+    */
     public function __isset($name)
     {
         return isset($_SESSION[$name]);
     }
 
-	/*
-	*	Deletes a value from the session
-	*
-	*	@param string $name
-	*
-	*	@return void
-	*/
+    /*
+    *	Deletes a value from the session
+    *
+    *	@param string $name
+    *
+    *	@return void
+    */
     public function __unset($name)
     {
         unset($_SESSION[$name]);

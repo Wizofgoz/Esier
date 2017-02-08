@@ -2,33 +2,33 @@
 
 namespace Esier\Manager;
 
-use GuzzleHttp\Client;
 use Esier\Exceptions\AuthorizationException;
+use GuzzleHttp\Client;
 
 class Manager
 {
-	/*
+    /*
     *	URL for verifying tokens (bearer/refresh)
     *
     *	@var string
     */
     const AUTH_URL = 'https://login.eveonline.com/oauth/token';
 
-	/*
+    /*
     *	URL of the SSO for authorization
     *
     *	@var string
     */
     const SSO_URL = 'https://login.eveonline.com/oauth/authorize';
-	
-	/*
+
+    /*
     *	Base URL of the API
     *
     *	@var string
     */
-	const BASE_URL = 'https://esi.tech.ccp.is/latest/';
+    const BASE_URL = 'https://esi.tech.ccp.is/latest/';
 
-	/*
+    /*
     *	Mapping of known scopes to shorthand names
     *
     *	@var array
@@ -63,77 +63,77 @@ class Manager
         'wallet-read'              => 'esi-wallet.read_character_wallet.v1',
     ];
 
-	/*
+    /*
     *	Key for storing current token in session
     *
     *	@var string
     */
     const SESSION_TOKEN = 'token';
 
-	/*
+    /*
     *	Key for storing current refresh token in session
     *
     *	@var string
     */
     const SESSION_REFRESH_TOKEN = 'refresh_token';
 
-	/*
+    /*
     *	Key for storing when current token will expire in session
     *
     *	@var string
     */
     const SESSION_TOKEN_EXPIRE = 'token_expiration';
 
-	/*
+    /*
     *	Current configuration of the Manager
     *
     *	@var array
     */
     protected $config;
 
-	/*
+    /*
     *	Guzzle client for HTTP communication
     *
     *	@var GuzzleHttp\Client
     */
     protected $client;
 
-	/*
+    /*
     *	Session object for storing values across page-loads
     *
     *	@var Esier\Manager\Session\CanStoreInterface
     */
     protected $session;
 
-	/*
+    /*
     *	Cache object for short-term local storage of data
     *
     *	@var Esier\Manager\Cache\CanCacheInterface
     */
     protected $cache;
 
-	/*
+    /*
     *	Current bearer token for authorization with the API
     *
     *	@var string
     */
     protected $currentToken;
 
-	/*
+    /*
     *	When the current bearer token will expire (timestamp)
     *
     *	@var integer
     */
     protected $sessionExpire;
 
-	/*
+    /*
     *	Current refresh token
     *
     *	@var string
     */
     protected $refreshToken;
 
-	/*
+    /*
     *	Whether the connection to the API has been authorized
     *
     *	@var boolean
@@ -157,9 +157,9 @@ class Manager
     *	Checks for a valid token in session store and redirects to SSO if none is found or uses the supplied refresh token
     *
     *	@param string $refresh
-	*
+    *
     *	@return void
-	*
+    *
     *	@throws Esier\Exceptions\AuthorizationException
     */
     public function authorize($refresh = null)
@@ -173,7 +173,7 @@ class Manager
 
                 return;
             } catch (Exception $e) {
-				throw new AuthorizationException();
+                throw new AuthorizationException();
             }
         }
         //	if it fails, try to check the session for a token
@@ -189,8 +189,8 @@ class Manager
     *	Redirects to SSO with either default scopes or those manually defined
     *
     *	@param array $scopes
-	*
-	*	@return void
+    *
+    *	@return void
     */
     public function redirect(array $scopes = null)
     {
@@ -212,10 +212,10 @@ class Manager
     *	Verify an Authorization Code received from the SSO
     *
     *	@param string $authCode
-	*
-	*	@return void
-	*
-	*	@throws Esier\Exceptions\AuthorizationException
+    *
+    *	@return void
+    *
+    *	@throws Esier\Exceptions\AuthorizationException
     */
     public function verify($authCode)
     {
@@ -242,8 +242,8 @@ class Manager
     *	Checks session storage for valid credentials
     *
     *	@return boolean
-	*
-	*	@throws Esier\Exceptions\AuthorizationException
+    *
+    *	@throws Esier\Exceptions\AuthorizationException
     */
     private function checkSession()
     {
@@ -270,8 +270,8 @@ class Manager
     *	Refreshes authorization using the current refresh token
     *
     *	@return void
-	*
-	*	@throws Esier\Exceptions\AuthorizationException
+    *
+    *	@throws Esier\Exceptions\AuthorizationException
     */
     private function refresh()
     {
@@ -298,8 +298,8 @@ class Manager
     *	Updates expiration time in both session and memory
     *
     *	@param integer $timestamp
-	*
-	*	@return void
+    *
+    *	@return void
     */
     private function setExpiration($timestamp)
     {
@@ -311,8 +311,8 @@ class Manager
     *	Updates current token in both session and memory
     *
     *	@param integer $token
-	*
-	*	@return void
+    *
+    *	@return void
     */
     private function setCurrentToken($token)
     {
@@ -324,8 +324,8 @@ class Manager
     *	Updates current refresh token in both session and memory
     *
     *	@param integer $token
-	*
-	*	@return void
+    *
+    *	@return void
     */
     private function setRefreshToken($token)
     {
