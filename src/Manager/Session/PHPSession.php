@@ -4,22 +4,69 @@ namespace Esier\Manager\Session;
 
 class PHPSession implements CanStoreInterface
 {
+	/*
+	*	State for declaring that the session has been started
+	*
+	*	@var boolean
+	*/
     const SESSION_STARTED = true;
+	
+	/*
+	*	State for declaring that the session has not been started
+	*
+	*	@var boolean
+	*/
     const SESSION_NOT_STARTED = false;
 
-    // The state of the session
+    /*
+	*	The current state of the session
+	*
+	*	@var boolean
+	*/
     private $sessionState = self::SESSION_NOT_STARTED;
 
+	/*
+	*	Name of the cookie to send the current Session ID in
+	*
+	*	@var string
+	*/
     protected $name;
 
+	/*
+	*	Time limit for the session to live between requests
+	*
+	*	@var integer
+	*/
     protected $limit;
 
+	/*
+	*	Path on the domain where the cookie will work. use '/' for all paths
+	*
+	*	@var string
+	*/
     protected $path;
 
+	/*
+	*	Cookie domain. Prefix with . for all subdomains
+	*
+	*	@var string
+	*/
     protected $domain;
 
+	/*
+	*	Whether cookie will only be sent over secure connections
+	*
+	*	@var boolean
+	*/
     protected $secure;
 
+	/*
+	*	Initialize values and start session
+	*
+	*	@param array $config
+	*
+	*	@return void
+	*/
     public function __construct(array $config)
     {
         $this->name = $config['name'];
@@ -30,11 +77,11 @@ class PHPSession implements CanStoreInterface
         $this->startSession();
     }
 
-    /**
-     *    (Re)starts the session.
-     *
-     *    @return    bool    TRUE if the session has been initialized, else FALSE.
-     **/
+    /*
+    *    (Re)starts the session.
+    *
+    *    @return boolean
+    */
     public function startSession()
     {
         if ($this->sessionState == self::SESSION_NOT_STARTED) {
@@ -76,6 +123,11 @@ class PHPSession implements CanStoreInterface
         return $this->sessionState;
     }
 
+	/*
+	*	Determine whether the session has been hijacked
+	*
+	*	@return boolean
+	*/
     protected function preventHijacking()
     {
         if (!isset($_SESSION['IPaddress']) || !isset($_SESSION['userAgent'])) {
@@ -93,6 +145,11 @@ class PHPSession implements CanStoreInterface
         return true;
     }
 
+	/*
+	*	Refresh the session with a new ID to prevent attacks
+	*
+	*	@return void
+	*/
     protected function regenerateSession()
     {
         // If this session is obsolete it means there already is a new id
@@ -120,6 +177,11 @@ class PHPSession implements CanStoreInterface
         unset($_SESSION['EXPIRES']);
     }
 
+	/*
+	*	Checks whether the session has expired
+	*
+	*	@return boolean
+	*/
     protected function validateSession()
     {
         if (isset($_SESSION['OBSOLETE']) && !isset($_SESSION['EXPIRES'])) {
@@ -133,28 +195,26 @@ class PHPSession implements CanStoreInterface
         return true;
     }
 
-    /**
-     *    Stores datas in the session.
-     *    Example: $instance->foo = 'bar';.
-     *
-     *    @param    name    Name of the datas.
-     *    @param    value    Your datas.
-     *
-     *    @return    void
-     **/
+    /*
+    *    Stores datas in the session.
+    *
+    *    @param name string
+    *    @param value mixed
+    *
+    *    @return void
+    */
     public function __set($name, $value)
     {
         $_SESSION[$name] = $value;
     }
 
-    /**
-     *    Gets datas from the session.
-     *    Example: echo $instance->foo;.
-     *
-     *    @param    name    Name of the datas to get.
-     *
-     *    @return    mixed    Datas stored in session.
-     **/
+    /*
+    *    Gets datas from the session.
+    *
+    *    @param name string
+    *
+    *    @return mixed
+    */
     public function __get($name)
     {
         if (isset($_SESSION[$name])) {
@@ -162,21 +222,35 @@ class PHPSession implements CanStoreInterface
         }
     }
 
+	/*
+	*	Checks whether a value is stored in the session
+	*
+	*	@param string $name
+	*
+	*	@return boolean
+	*/
     public function __isset($name)
     {
         return isset($_SESSION[$name]);
     }
 
+	/*
+	*	Deletes a value from the session
+	*
+	*	@param string $name
+	*
+	*	@return void
+	*/
     public function __unset($name)
     {
         unset($_SESSION[$name]);
     }
 
-    /**
-     *    Destroys the current session.
-     *
-     *    @return    bool    TRUE is session has been deleted, else FALSE.
-     **/
+    /*
+    *    Destroys the current session.
+    *
+    *    @return bool
+    */
     public function destroy()
     {
         if ($this->sessionState == self::SESSION_STARTED) {

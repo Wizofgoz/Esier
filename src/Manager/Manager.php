@@ -3,13 +3,36 @@
 namespace Esier\Manager;
 
 use GuzzleHttp\Client;
+use Esier\Exceptions\AuthorizationException;
 
 class Manager
 {
+	/*
+    *	URL for verifying tokens (bearer/refresh)
+    *
+    *	@var string
+    */
     const AUTH_URL = 'https://login.eveonline.com/oauth/token';
 
+	/*
+    *	URL of the SSO for authorization
+    *
+    *	@var string
+    */
     const SSO_URL = 'https://login.eveonline.com/oauth/authorize';
+	
+	/*
+    *	Base URL of the API
+    *
+    *	@var string
+    */
+	const BASE_URL = 'https://esi.tech.ccp.is/latest/';
 
+	/*
+    *	Mapping of known scopes to shorthand names
+    *
+    *	@var array
+    */
     const AVAILABLE_SCOPES = [
         'assets-read'              => 'esi-assets.read_assets.v1',
         'bookmarks-read'           => 'esi-bookmarks.read_character_bookmarks.v1',
@@ -40,26 +63,81 @@ class Manager
         'wallet-read'              => 'esi-wallet.read_character_wallet.v1',
     ];
 
+	/*
+    *	Key for storing current token in session
+    *
+    *	@var string
+    */
     const SESSION_TOKEN = 'token';
 
+	/*
+    *	Key for storing current refresh token in session
+    *
+    *	@var string
+    */
     const SESSION_REFRESH_TOKEN = 'refresh_token';
 
+	/*
+    *	Key for storing when current token will expire in session
+    *
+    *	@var string
+    */
     const SESSION_TOKEN_EXPIRE = 'token_expiration';
 
+	/*
+    *	Current configuration of the Manager
+    *
+    *	@var array
+    */
     protected $config;
 
+	/*
+    *	Guzzle client for HTTP communication
+    *
+    *	@var GuzzleHttp\Client
+    */
     protected $client;
 
+	/*
+    *	Session object for storing values across page-loads
+    *
+    *	@var Esier\Manager\Session\CanStoreInterface
+    */
     protected $session;
 
+	/*
+    *	Cache object for short-term local storage of data
+    *
+    *	@var Esier\Manager\Cache\CanCacheInterface
+    */
     protected $cache;
 
+	/*
+    *	Current bearer token for authorization with the API
+    *
+    *	@var string
+    */
     protected $currentToken;
 
+	/*
+    *	When the current bearer token will expire (timestamp)
+    *
+    *	@var integer
+    */
     protected $sessionExpire;
 
+	/*
+    *	Current refresh token
+    *
+    *	@var string
+    */
     protected $refreshToken;
 
+	/*
+    *	Whether the connection to the API has been authorized
+    *
+    *	@var boolean
+    */
     protected $authorized = false;
 
     /*
@@ -71,7 +149,7 @@ class Manager
     public function __construct(array $config)
     {
         $this->config = $config;
-        $this->client = new Client(['base_uri' => 'https://esi.tech.ccp.is/latest/']);
+        $this->client = new Client(['base_uri' => self::BASE_URL]);
         $this->session = new $this->config['Session']['Handler']($this->config['Session']);
     }
 
@@ -79,8 +157,10 @@ class Manager
     *	Checks for a valid token in session store and redirects to SSO if none is found or uses the supplied refresh token
     *
     *	@param string $refresh
-    *	@return
-    *	@throws
+	*
+    *	@return void
+	*
+    *	@throws Esier\Exceptions\AuthorizationException
     */
     public function authorize($refresh = null)
     {
@@ -91,8 +171,9 @@ class Manager
                 $this->refresh();
                 $this->authorized = true;
 
-                return true;
+                return;
             } catch (Exception $e) {
+				throw new AuthorizationException();
             }
         }
         //	if it fails, try to check the session for a token
@@ -107,7 +188,9 @@ class Manager
     /*
     *	Redirects to SSO with either default scopes or those manually defined
     *
-    *
+    *	@param array $scopes
+	*
+	*	@return void
     */
     public function redirect(array $scopes = null)
     {
@@ -128,7 +211,11 @@ class Manager
     /*
     *	Verify an Authorization Code received from the SSO
     *
-    *
+    *	@param string $authCode
+	*
+	*	@return void
+	*
+	*	@throws Esier\Exceptions\AuthorizationException
     */
     public function verify($authCode)
     {
@@ -144,7 +231,7 @@ class Manager
         ]);
         $data = json_decode((string) $response, true);
         if (!isset($data['access_token'])) {
-            throw new Exception('');
+            throw new AuthorizationException('');
         }
         $this->setCurrentToken($data['access_token']);
         $this->setRefreshToken($data['refresh_token']);
@@ -154,7 +241,9 @@ class Manager
     /*
     *	Checks session storage for valid credentials
     *
-    *
+    *	@return boolean
+	*
+	*	@throws Esier\Exceptions\AuthorizationException
     */
     private function checkSession()
     {
@@ -178,9 +267,11 @@ class Manager
     }
 
     /*
+    *	Refreshes authorization using the current refresh token
     *
-    *
-    *
+    *	@return void
+	*
+	*	@throws Esier\Exceptions\AuthorizationException
     */
     private function refresh()
     {
@@ -196,7 +287,7 @@ class Manager
         ]);
         $data = json_decode((string) $response, true);
         if (!isset($data['access_token'])) {
-            throw new Exception('');
+            throw new AuthorizationException('');
         }
         $this->setCurrentToken($data['access_token']);
         $this->setRefreshToken($data['refresh_token']);
@@ -204,9 +295,11 @@ class Manager
     }
 
     /*
+    *	Updates expiration time in both session and memory
     *
-    *
-    *
+    *	@param integer $timestamp
+	*
+	*	@return void
     */
     private function setExpiration($timestamp)
     {
@@ -215,9 +308,11 @@ class Manager
     }
 
     /*
+    *	Updates current token in both session and memory
     *
-    *
-    *
+    *	@param integer $token
+	*
+	*	@return void
     */
     private function setCurrentToken($token)
     {
@@ -226,9 +321,11 @@ class Manager
     }
 
     /*
+    *	Updates current refresh token in both session and memory
     *
-    *
-    *
+    *	@param integer $token
+	*
+	*	@return void
     */
     private function setRefreshToken($token)
     {
@@ -237,9 +334,9 @@ class Manager
     }
 
     /*
+    *	Builds token for use in Authorization header
     *
-    *
-    *
+    *	@return string
     */
     private function buildBasicToken()
     {

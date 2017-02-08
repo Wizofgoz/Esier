@@ -4,7 +4,7 @@ namespace Esier\Manager\Session;
 
 interface CanStoreInterface
 {
-    public function __construct($name, $limit = 0, $path = '/', $domain = null, $secure = null);
+    public function __construct(array $config);
 
     public function startSession();
 
