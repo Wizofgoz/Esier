@@ -35,22 +35,22 @@ return [
             'wallet-read',
         ],
     ],
-	
-	'Http' => [
-		'Handler' => \Esier\Http\GuzzleHttp::class,
-		'NullHttp' => null,
-		'GuzzleHttp' => [
-			'base_uri' => \Esier\Manager::BASE_URL
-		]
-	],
-	
-	'Log' => [
-		'Handler' => \Esier\Log\NullLog::class,
-		'NullLog' => null,
-		'FileLog' => [
-			''
-		]
-	],
+
+    'Http' => [
+        'Handler'    => \Esier\Http\GuzzleHttp::class,
+        'NullHttp'   => null,
+        'GuzzleHttp' => [
+            'base_uri' => \Esier\Manager::BASE_URL,
+        ],
+    ],
+
+    'Log' => [
+        'Handler' => \Esier\Log\NullLog::class,
+        'NullLog' => null,
+        'FileLog' => [
+            '',
+        ],
+    ],
 
     'Cache' => [
         'Handler' => \Esier\Cache\NullCache::class,

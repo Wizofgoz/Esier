@@ -2,7 +2,6 @@
 
 namespace Esier\Models;
 
-use Esier\Models\CanCallAPIInterface;
 use Esier\Exceptions\MemberAccessException;
 
 abstract class Base implements CanCallAPIInterface

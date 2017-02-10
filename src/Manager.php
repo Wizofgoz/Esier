@@ -2,8 +2,8 @@
 
 namespace Esier;
 
-use Esier\Exceptions\AuthorizationException;
 use Esier\Config\ConfigurationManager;
+use Esier\Exceptions\AuthorizationException;
 use GuzzleHttp\Client;
 
 class Manager
@@ -84,8 +84,8 @@ class Manager
     *	@var string
     */
     const SESSION_TOKEN_EXPIRE = 'token_expiration';
-	
-	/*
+
+    /*
     *	The instance of the class
     *
     *	@var array
@@ -159,18 +159,20 @@ class Manager
         $this->client = new $this->config->Http->handler($this->config->Http);
         $this->session = new $this->config->Session->handler($this->config->Session);
     }
-	
-	/*
+
+    /*
     *	Returns the only instance of the object
     *
     *	@return Esier\Manager
     */
-	public static function getInstance() : self
-	{
-		if(is_null(self::$instance))
-			self::$instance = new self();
-		return self::$instance;
-	}
+    public static function getInstance() : self
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
     /*
     *	Checks for a valid token in session store and redirects to SSO if none is found or uses the supplied refresh token
