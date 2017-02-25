@@ -13,8 +13,8 @@ class Manager
     *	@var string
     */
     const AUTH_URL = 'https://login.eveonline.com/oauth/token';
-	
-	/*
+
+    /*
     *	URL for verifying tokens (bearer/refresh)
     *
     *	@var string
@@ -153,13 +153,13 @@ class Manager
     *	@var boolean
     */
     protected $authorized = false;
-	
-	/*
-	*	Array of info about authorized connection
-	*
-	*	@var array
-	*/
-	protected $authorizationInfo = [];
+
+    /*
+    *	Array of info about authorized connection
+    *
+    *	@var array
+    */
+    protected $authorizationInfo = [];
 
     /*
     *	Initializes the Manager Object
@@ -325,49 +325,48 @@ class Manager
         $this->setRefreshToken($data['refresh_token']);
         $this->setExpiration(time() + $data['expires_in']);
     }
-	
-	/*
-	*	Return data about the current token
-	*
-	*	@return array
-	*/
-	public function getAuthedScopes(): array
-	{
-		$info = $this->getCharacterInfo();
-		$scopes = [];
-		$rawScopes = explode(' ', $info['Scopes']);
-		foreach($rawScopes as $rawScope)
-		{
-			$scopes[] = \array_flip(self::AVAILABLE_SCOPES)[$rawScope];
-		}
-		return $scopes;
-	}
-	
-	/*
-	*	Return data about the current token
-	*
-	*	@return array
-	*
-	*	@throws Esier\Exceptions\AuthorizationException
-	*/
-	public function getCharacterInfo(): array
-	{
-		if(empty($this->authorizationInfo))
-		{
-			$data = $this->client->request('GET', self::VERIFY_URL, [
-				'headers' => [
-					'Authorization' => 'Bearer '.$this->currentToken,
-					'Host'          => 'login.eveonline.com',
-				],
-			]);
-			if (!isset($data['CharacterID'])) {
-				throw new AuthorizationException('Incorrect response from API');
-			}
-			$this->authorizationInfo = $data;
-		}
-		
-		return $this->authorizationInfo;
-	}
+
+    /*
+    *	Return data about the current token
+    *
+    *	@return array
+    */
+    public function getAuthedScopes(): array
+    {
+        $info = $this->getCharacterInfo();
+        $scopes = [];
+        $rawScopes = explode(' ', $info['Scopes']);
+        foreach ($rawScopes as $rawScope) {
+            $scopes[] = \array_flip(self::AVAILABLE_SCOPES)[$rawScope];
+        }
+
+        return $scopes;
+    }
+
+    /*
+    *	Return data about the current token
+    *
+    *	@return array
+    *
+    *	@throws Esier\Exceptions\AuthorizationException
+    */
+    public function getCharacterInfo(): array
+    {
+        if (empty($this->authorizationInfo)) {
+            $data = $this->client->request('GET', self::VERIFY_URL, [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$this->currentToken,
+                    'Host'          => 'login.eveonline.com',
+                ],
+            ]);
+            if (!isset($data['CharacterID'])) {
+                throw new AuthorizationException('Incorrect response from API');
+            }
+            $this->authorizationInfo = $data;
+        }
+
+        return $this->authorizationInfo;
+    }
 
     /*
     *	Updates expiration time in both session and memory
@@ -417,46 +416,43 @@ class Manager
     {
         return \base64_encode($this->config->Manager->client_id.':'.$this->config->Manager->secret_key);
     }
-	
-	/*
-	*	Make a call to the API
-	*
-	*	@param string $method
-	*	@param string $uri
-	*	@param array $parameters
-	*	@param array $body
-	*	@param bool $authenticated
-	*
-	*	@return array
-	*/
-	public function call(string $method, string $uri, array $parameters = null, array $body = null, bool $authenticated = false): array
-	{
-		$settings = [
-			'headers' => [
-				'Host' => 'esi.tech.ccp.is',
-			],
-		];
-		
-		$queryParameters = [
-			'datasource' => $this->config->Manager->data_source
-		];
-		
-		if($body !== null)
-		{
-			$settings['json'] = \json_encode($body, JSON_FORCE_OBJECT);
-		}
-		
-		if($parameters !== null)
-		{
-			$queryParameters = \array_merge($queryParameters, $parameters);
-		}
-		
-		if($authenticated)
-		{
-			$this->authorize();
-			$settings['headers']['Authorization'] = 'Bearer '.$this->currentToken;
-		}
-		
-		return $this->client->request($method, $uri.\http_build_query($queryParameters), $settings);
-	}
+
+    /*
+    *	Make a call to the API
+    *
+    *	@param string $method
+    *	@param string $uri
+    *	@param array $parameters
+    *	@param array $body
+    *	@param bool $authenticated
+    *
+    *	@return array
+    */
+    public function call(string $method, string $uri, array $parameters = null, array $body = null, bool $authenticated = false): array
+    {
+        $settings = [
+            'headers' => [
+                'Host' => 'esi.tech.ccp.is',
+            ],
+        ];
+
+        $queryParameters = [
+            'datasource' => $this->config->Manager->data_source,
+        ];
+
+        if ($body !== null) {
+            $settings['json'] = \json_encode($body, JSON_FORCE_OBJECT);
+        }
+
+        if ($parameters !== null) {
+            $queryParameters = \array_merge($queryParameters, $parameters);
+        }
+
+        if ($authenticated) {
+            $this->authorize();
+            $settings['headers']['Authorization'] = 'Bearer '.$this->currentToken;
+        }
+
+        return $this->client->request($method, $uri.\http_build_query($queryParameters), $settings);
+    }
 }
