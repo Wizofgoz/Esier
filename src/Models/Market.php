@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Market extends Base
+class Market implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

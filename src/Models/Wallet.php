@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Wallet extends Base
+class Wallet implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

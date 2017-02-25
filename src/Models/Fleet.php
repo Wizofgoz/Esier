@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Fleet extends Base
+class Fleet implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Wars extends Base
+class Wars implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

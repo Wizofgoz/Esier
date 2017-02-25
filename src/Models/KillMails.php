@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class KillMails extends Base
+class KillMails implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

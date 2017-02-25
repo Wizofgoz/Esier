@@ -5,6 +5,7 @@ return [
         'client_id'      => '',
         'secret_key'     => '',
         'callback_url'   => '',
+		'data_source'	 => 'tranquility',	//	can be either tranquility or singularity
         'default_scopes' => [
             'assets-read',
             'bookmarks-read',

@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class UserInterface extends Base
+class UserInterface implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Sovereignty extends Base
+class Sovereignty implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Corporation extends Base
+class Corporation implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

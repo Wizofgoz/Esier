@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Location extends Base
+class Location implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Search extends Base
+class Search implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

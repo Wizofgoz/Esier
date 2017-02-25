@@ -2,11 +2,11 @@
 
 namespace Esier\Models;
 
-use Esier\Manager;
-
 interface CanCallAPIInterface
 {
-    public function __construct(Manager $manager, array $args);
-
-    private function call();
+	protected $manager;
+	
+	protected $requiredScopes;
+	
+    public function __construct();
 }

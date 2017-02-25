@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Skills extends Base
+class Skills implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

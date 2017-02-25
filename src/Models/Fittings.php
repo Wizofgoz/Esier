@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Fittings extends Base
+class Fittings implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

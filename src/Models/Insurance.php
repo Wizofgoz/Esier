@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Insurance extends Base
+class Insurance implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

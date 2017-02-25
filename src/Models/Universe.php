@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Universe extends Base
+class Universe implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class PlanetaryInteraction extends Base
+class PlanetaryInteraction implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

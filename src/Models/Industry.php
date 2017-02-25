@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Industry extends Base
+class Industry implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

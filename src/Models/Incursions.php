@@ -2,6 +2,7 @@
 
 namespace Esier\Models;
 
-class Incursions extends Base
+class Incursions implements CanCallAPIInterface
 {
+	use ChecksScopes;
 }

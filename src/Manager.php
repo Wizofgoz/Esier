@@ -4,7 +4,6 @@ namespace Esier;
 
 use Esier\Config\ConfigurationManager;
 use Esier\Exceptions\AuthorizationException;
-use GuzzleHttp\Client;
 
 class Manager
 {
@@ -14,6 +13,13 @@ class Manager
     *	@var string
     */
     const AUTH_URL = 'https://login.eveonline.com/oauth/token';
+	
+	/*
+    *	URL for verifying tokens (bearer/refresh)
+    *
+    *	@var string
+    */
+    const VERIFY_URL = 'https://login.eveonline.com/oauth/verify';
 
     /*
     *	URL of the SSO for authorization
@@ -41,7 +47,7 @@ class Manager
         'calendar-write'           => 'esi-calendar.respond_calendar_events.v1',
         'contacts-read'            => 'esi-characters.read_contacts.v1',
         'contacts-write'           => 'esi-characters.write_contacts.v1',
-        'clones-write'             => 'esi-clones.read_clones.v1',
+        'clones-read'              => 'esi-clones.read_clones.v1',
         'corporation-read'         => 'esi-corporations.read_corporation_membership.v1',
         'fittings-read'            => 'esi-fittings.read_fittings.v1',
         'fittings-write'           => 'esi-fittings.write_fittings.v1',
@@ -147,6 +153,13 @@ class Manager
     *	@var boolean
     */
     protected $authorized = false;
+	
+	/*
+	*	Array of info about authorized connection
+	*
+	*	@var array
+	*/
+	protected $authorizationInfo = [];
 
     /*
     *	Initializes the Manager Object
@@ -161,7 +174,7 @@ class Manager
     }
 
     /*
-    *	Returns the only instance of the object
+    *	Returns the only instance of the class
     *
     *	@return Esier\Manager
     */
@@ -193,14 +206,14 @@ class Manager
                 $this->authorized = true;
 
                 return;
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 throw new AuthorizationException();
             }
         }
         //	if it fails, try to check the session for a token
         try {
             $this->checkSession();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             //	if that fails, redirect to SSO for fresh session
             $this->redirect();
         }
@@ -218,11 +231,11 @@ class Manager
         if ($scopes === null) {
             $scopes = $this->config->Manager->default_scopes;
         }
-        $url = self::SSO_URL.'/'.http_build_query([
+        $url = self::SSO_URL.'/'.\http_build_query([
             'response_type' => 'code',
             'redirect_uri'  => $this->config->Manager->callback_url,
             'client_id'     => $this->config->Manager->client_id,
-            'scope'         => implode(' ', $scopes),
+            'scope'         => \implode(' ', $scopes),
             'state'         => '',
         ], null, null, PHP_QUERY_RFC3986);
         header('Location: '.$url);
@@ -240,7 +253,7 @@ class Manager
     */
     public function verify($authCode)
     {
-        $response = $this->client->request('POST', self::AUTH_URL, [
+        $data = $this->client->request('POST', self::AUTH_URL, [
             'headers' => [
                 'Authorization' => 'Basic '.$this->buildBasicToken(),
                 'Host'          => 'login.eveonline.com',
@@ -250,7 +263,6 @@ class Manager
                 'code'       => $authCode,
             ],
         ]);
-        $data = json_decode((string) $response, true);
         if (!isset($data['access_token'])) {
             throw new AuthorizationException('');
         }
@@ -296,7 +308,7 @@ class Manager
     */
     private function refresh()
     {
-        $response = $this->client->request('POST', self::AUTH_URL, [
+        $data = $this->client->request('POST', self::AUTH_URL, [
             'headers' => [
                 'Authorization' => 'Basic '.$this->buildBasicToken(),
                 'Host'          => 'login.eveonline.com',
@@ -306,7 +318,6 @@ class Manager
                 'refresh_token' => $this->refreshToken,
             ],
         ]);
-        $data = json_decode((string) $response, true);
         if (!isset($data['access_token'])) {
             throw new AuthorizationException('');
         }
@@ -314,6 +325,49 @@ class Manager
         $this->setRefreshToken($data['refresh_token']);
         $this->setExpiration(time() + $data['expires_in']);
     }
+	
+	/*
+	*	Return data about the current token
+	*
+	*	@return array
+	*/
+	public function getAuthedScopes(): array
+	{
+		$info = $this->getCharacterInfo();
+		$scopes = [];
+		$rawScopes = explode(' ', $info['Scopes'])
+		foreach($rawScopes as $rawScope)
+		{
+			$scopes[] = \array_flip(self::AVAILABLE_SCOPES)[$rawScope];
+		}
+		return $scopes;
+	}
+	
+	/*
+	*	Return data about the current token
+	*
+	*	@return array
+	*
+	*	@throws Esier\Exceptions\AuthorizationException
+	*/
+	public function getCharacterInfo(): array
+	{
+		if(empty($this->authorizationInfo))
+		{
+			$data = $this->client->request('GET', self::VERIFY_URL, [
+				'headers' => [
+					'Authorization' => 'Bearer '.$this->currentToken,
+					'Host'          => 'login.eveonline.com',
+				],
+			]);
+			if (!isset($data['CharacterID'])) {
+				throw new AuthorizationException('Incorrect response from API');
+			}
+			$this->authorizationInfo = $data;
+		}
+		
+		return $this->authorizationInfo;
+	}
 
     /*
     *	Updates expiration time in both session and memory
@@ -361,6 +415,48 @@ class Manager
     */
     private function buildBasicToken() : string
     {
-        return base64_encode($this->config->Manager->client_id.':'.$this->config->Manager->secret_key);
+        return \base64_encode($this->config->Manager->client_id.':'.$this->config->Manager->secret_key);
     }
+	
+	/*
+	*	Make a call to the API
+	*
+	*	@param string $method
+	*	@param string $uri
+	*	@param array $parameters
+	*	@param array $body
+	*	@param bool $authenticated
+	*
+	*	@return array
+	*/
+	public function call(string $method, string $uri, array $parameters = null, array $body = null, bool $authenticated = false): array
+	{
+		$settings = [
+			'headers' => [
+				'Host' => 'esi.tech.ccp.is',
+			],
+		];
+		
+		$queryParameters = [
+			'datasource' => $this->config->Manager->data_source
+		];
+		
+		if($body !== null)
+		{
+			$settings['json'] = \json_encode($body, JSON_FORCE_OBJECT);
+		}
+		
+		if($parameters !== null)
+		{
+			$queryParameters = \array_merge($queryParameters, $parameters);
+		}
+		
+		if($authenticated)
+		{
+			$this->authorize();
+			$settings['headers']['Authorization'] = 'Bearer '.$this->currentToken;
+		}
+		
+		return $this->client->request($method, $uri.\http_build_query($queryParameters), $settings);
+	}
 }
