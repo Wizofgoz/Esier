@@ -4,5 +4,5 @@ namespace Esier\Models;
 
 class Skills implements CanCallAPIInterface
 {
-	use ChecksScopes;
+    use ChecksScopes;
 }

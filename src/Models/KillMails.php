@@ -4,5 +4,5 @@ namespace Esier\Models;
 
 class KillMails implements CanCallAPIInterface
 {
-	use ChecksScopes;
+    use ChecksScopes;
 }
