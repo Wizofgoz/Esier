@@ -4,5 +4,5 @@ namespace Esier\Models;
 
 class Search implements CanCallAPIInterface
 {
-	use ChecksScopes;
+    use ChecksScopes;
 }

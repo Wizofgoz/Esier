@@ -4,5 +4,5 @@ namespace Esier\Models;
 
 class Sovereignty implements CanCallAPIInterface
 {
-	use ChecksScopes;
+    use ChecksScopes;
 }

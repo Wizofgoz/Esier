@@ -19,13 +19,13 @@ class Esier
     *	@var Esier\Manager
     */
     private $manager;
-	
-	/*
-	*	Array of instanciated models
-	*
-	*	@var array
-	*/
-	private $models = [];
+
+    /*
+    *	Array of instanciated models
+    *
+    *	@var array
+    */
+    private $models = [];
 
     /*
     *	Initialize the library
@@ -70,11 +70,10 @@ class Esier
     */
     public function __get(string $name)
     {
-		if(!isset($this->models[$name]))
-		{
-			$this->models[$name] = ModelFactory::factory($name);
-		}
-		
+        if (!isset($this->models[$name])) {
+            $this->models[$name] = ModelFactory::factory($name);
+        }
+
         return $this->models[$name];
     }
 }

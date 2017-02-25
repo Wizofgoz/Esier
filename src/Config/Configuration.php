@@ -2,11 +2,11 @@
 
 return [
     'Manager' => [
-        'client_id'      => '',
-        'secret_key'     => '',
-        'callback_url'   => '',
-		'data_source'	 => 'tranquility',	//	can be either tranquility or singularity
-        'default_scopes' => [
+        'client_id'       => '',
+        'secret_key'      => '',
+        'callback_url'    => '',
+        'data_source'     => 'tranquility',    //	can be either tranquility or singularity
+        'default_scopes'  => [
             'assets-read',
             'bookmarks-read',
             'calendar-read',

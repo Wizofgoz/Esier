@@ -4,5 +4,5 @@ namespace Esier\Models;
 
 class Incursions implements CanCallAPIInterface
 {
-	use ChecksScopes;
+    use ChecksScopes;
 }

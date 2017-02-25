@@ -4,5 +4,5 @@ namespace Esier\Models;
 
 class Industry implements CanCallAPIInterface
 {
-	use ChecksScopes;
+    use ChecksScopes;
 }
