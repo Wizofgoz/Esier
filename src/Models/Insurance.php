@@ -4,5 +4,5 @@ namespace Esier\Models;
 
 class Insurance implements CanCallAPIInterface
 {
-	use ChecksScopes;
+    use ChecksScopes;
 }

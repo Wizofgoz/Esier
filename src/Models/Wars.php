@@ -4,5 +4,5 @@ namespace Esier\Models;
 
 class Wars implements CanCallAPIInterface
 {
-	use ChecksScopes;
+    use ChecksScopes;
 }
