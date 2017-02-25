@@ -335,7 +335,7 @@ class Manager
 	{
 		$info = $this->getCharacterInfo();
 		$scopes = [];
-		$rawScopes = explode(' ', $info['Scopes'])
+		$rawScopes = explode(' ', $info['Scopes']);
 		foreach($rawScopes as $rawScope)
 		{
 			$scopes[] = \array_flip(self::AVAILABLE_SCOPES)[$rawScope];
