@@ -5,8 +5,8 @@ namespace Esier\Models;
 class Dogma implements CanCallAPIInterface
 {
     use ChecksScopes;
-	use ChecksResponses;
-	
+    use ChecksResponses;
+
     /*
     *	Instance of the manager object
     *
@@ -21,9 +21,9 @@ class Dogma implements CanCallAPIInterface
     */
     protected $requiredScopes = [
         'attributeIds' => null,
-		'attribute' => null,
-		'effectIds' => null,
-		'effect' => null
+        'attribute'    => null,
+        'effectIds'    => null,
+        'effect'       => null,
     ];
 
     /*
@@ -35,8 +35,8 @@ class Dogma implements CanCallAPIInterface
     {
         $this->manager = Manager::getInstance();
     }
-	
-	/*
+
+    /*
     *	Get a list of dogma attribute ids
     *
     *	@return array
@@ -44,12 +44,12 @@ class Dogma implements CanCallAPIInterface
     public function attributeIds(): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'dogma/attributes/');
+        $response = $this->manager->call('GET', 'dogma/attributes/');
 
         return $this->checkResponse($response, 200);
     }
-	
-	/*
+
+    /*
     *	Get information on a dogma attribute
     *
     *	@param int $attributeId
@@ -59,12 +59,12 @@ class Dogma implements CanCallAPIInterface
     public function attribute(int $attributeId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'dogma/attributes/'.$attributeId.'/');
+        $response = $this->manager->call('GET', 'dogma/attributes/'.$attributeId.'/');
 
         return $this->checkResponse($response, 200);
     }
-	
-	/*
+
+    /*
     *	List all active player alliances
     *
     *	@return array
@@ -72,12 +72,12 @@ class Dogma implements CanCallAPIInterface
     public function effectIds(): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'dogma/effects/');
+        $response = $this->manager->call('GET', 'dogma/effects/');
 
         return $this->checkResponse($response, 200);
     }
-	
-	/*
+
+    /*
     *	Get information on a dogma effect
     *
     *	@param int $effectId
@@ -87,7 +87,7 @@ class Dogma implements CanCallAPIInterface
     public function effect(int $effectId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'dogma/effects/'.$effectId.'/');
+        $response = $this->manager->call('GET', 'dogma/effects/'.$effectId.'/');
 
         return $this->checkResponse($response, 200);
     }

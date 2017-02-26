@@ -67,7 +67,7 @@ final class ModelFactory
             case 'Corporation':
                 return new Corporation();
                 break;
-			case 'Dogma':
+            case 'Dogma':
                 return new Dogma();
                 break;
             case 'Fittings':

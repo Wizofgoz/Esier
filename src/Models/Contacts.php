@@ -7,8 +7,8 @@ use Esier\Manager;
 class Contacts implements CanCallAPIInterface
 {
     use ChecksScopes;
-	use ChecksResponses;
-	use ChecksParameters;
+    use ChecksResponses;
+    use ChecksParameters;
 
     /*
     *	Instance of the manager object
@@ -23,11 +23,11 @@ class Contacts implements CanCallAPIInterface
     *	@var array
     */
     protected $requiredScopes = [
-        'get' => 'contacts-read',
-		'delete' => 'contacts-write',
-		'add' => 'contacts-write',
-		'edit' => 'contacts-write',
-		'labels' => 'contacts-read'
+        'get'    => 'contacts-read',
+        'delete' => 'contacts-write',
+        'add'    => 'contacts-write',
+        'edit'   => 'contacts-write',
+        'labels' => 'contacts-read',
     ];
 
     /*
@@ -50,7 +50,7 @@ class Contacts implements CanCallAPIInterface
     public function get(integer $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/contacts/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/contacts/');
 
         return $this->checkResponse($response, 200);
     }
@@ -66,7 +66,7 @@ class Contacts implements CanCallAPIInterface
     public function delete(integer $characterId, array $targetIds): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('DELETE', 'characters/'.$characterId.'/contacts/', null, [
+        $response = $this->manager->call('DELETE', 'characters/'.$characterId.'/contacts/', null, [
             'contact_ids' => $targetIds,
         ]);
 
@@ -90,9 +90,9 @@ class Contacts implements CanCallAPIInterface
             'standing' => $standing,
         ];
         $this->addParameter($parameters, 'watched', $watch);
-		$this->addParameter($parameters, 'label_id', $labelId);
+        $this->addParameter($parameters, 'label_id', $labelId);
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('POST', 'characters/'.$characterId.'/contacts/', $parameters, [
+        $response = $this->manager->call('POST', 'characters/'.$characterId.'/contacts/', $parameters, [
             'contact_ids' => $targetIds,
         ]);
 
@@ -115,10 +115,10 @@ class Contacts implements CanCallAPIInterface
         $parameters = [
             'standing' => $standing,
         ];
-		$this->addParameter($parameters, 'watched', $watch);
-		$this->addParameter($parameters, 'label_id', $labelId);
+        $this->addParameter($parameters, 'watched', $watch);
+        $this->addParameter($parameters, 'label_id', $labelId);
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('PUT', 'characters/'.$characterId.'/contacts/', $parameters, [
+        $response = $this->manager->call('PUT', 'characters/'.$characterId.'/contacts/', $parameters, [
             'contact_ids' => $targetIds,
         ]);
 
@@ -135,7 +135,7 @@ class Contacts implements CanCallAPIInterface
     public function labels(integer $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/contacts/labels/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/contacts/labels/');
 
         return $this->checkResponse($response, 200);
     }

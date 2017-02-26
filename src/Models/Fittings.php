@@ -5,8 +5,8 @@ namespace Esier\Models;
 class Fittings implements CanCallAPIInterface
 {
     use ChecksScopes;
-	use ChecksResponses;
-	
+    use ChecksResponses;
+
     /*
     *	Instance of the manager object
     *
@@ -20,9 +20,9 @@ class Fittings implements CanCallAPIInterface
     *	@var array
     */
     protected $requiredScopes = [
-        'get' => 'fittings-read',
-		'listNPCIds' => null,
-		'get' => null
+        'get'        => 'fittings-read',
+        'listNPCIds' => null,
+        'get'        => null,
     ];
 
     /*
@@ -34,8 +34,8 @@ class Fittings implements CanCallAPIInterface
     {
         $this->manager = Manager::getInstance();
     }
-	
-	/*
+
+    /*
     *	Return fittings of a character
     *
     *	@param int $characterId
@@ -45,12 +45,12 @@ class Fittings implements CanCallAPIInterface
     public function get(integer $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/fittings/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/fittings/');
 
         return $this->checkResponse($response, 200);
     }
-	
-	/*
+
+    /*
     *	Bulk add contacts with same settings
     *
     *	@param int $characterId
@@ -67,15 +67,15 @@ class Fittings implements CanCallAPIInterface
             'standing' => $standing,
         ];
         $this->addParameter($parameters, 'watched', $watch);
-		$this->addParameter($parameters, 'label_id', $labelId);
+        $this->addParameter($parameters, 'label_id', $labelId);
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('POST', 'characters/'.$characterId.'/fittings/', null, [
-			'fitting' => [
-				'description' => $description,
-				'items' => $items,
-				'name' => $name,
-				'ship_type_id' => $shipType
-			]
+        $response = $this->manager->call('POST', 'characters/'.$characterId.'/fittings/', null, [
+            'fitting' => [
+                'description'  => $description,
+                'items'        => $items,
+                'name'         => $name,
+                'ship_type_id' => $shipType,
+            ],
         ]);
 
         return $this->checkResponse($response, 201);

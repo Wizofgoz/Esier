@@ -7,8 +7,8 @@ use Esier\Manager;
 class Calendar implements CanCallAPIInterface
 {
     use ChecksScopes;
-	use ChecksResponses;
-	use ChecksParameters;
+    use ChecksResponses;
+    use ChecksParameters;
 
     /*
     *	Instance of the manager object
@@ -24,8 +24,8 @@ class Calendar implements CanCallAPIInterface
     */
     protected $requiredScopes = [
         'events'      => 'calendar-read',
-        'info'  => 'calendar-read',
-        'respond' => 'calendar-write',
+        'info'        => 'calendar-read',
+        'respond'     => 'calendar-write',
     ];
 
     /*
@@ -52,9 +52,9 @@ class Calendar implements CanCallAPIInterface
     public function events(int $characterId, int $fromEventId = null): array
     {
         $parameters = null;
-		$this->addParameter($parameters, 'from_event', $fromEventId);
+        $this->addParameter($parameters, 'from_event', $fromEventId);
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/calendar/', $parameters);
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/calendar/', $parameters);
 
         return $this->checkResponse($response, 200);
     }
@@ -70,7 +70,7 @@ class Calendar implements CanCallAPIInterface
     public function info(int $characterId, int $eventId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/calendar/'.$eventId.'/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/calendar/'.$eventId.'/');
 
         return $this->checkResponse($response, 200);
     }
@@ -97,7 +97,7 @@ class Calendar implements CanCallAPIInterface
             throw new \InvalidArgumentException('Incorrect value passed for response');
         }
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('PUT', 'characters/'.$characterId.'/calendar/'.$eventId.'/', null, [
+        $response = $this->manager->call('PUT', 'characters/'.$characterId.'/calendar/'.$eventId.'/', null, [
             'response' => $response,
         ]);
 
