@@ -7,6 +7,7 @@ use Esier\Manager;
 class Character implements CanCallAPIInterface
 {
     use ChecksScopes;
+	use ChecksResponses;
 
     /*
     *	Instance of the manager object
@@ -54,8 +55,9 @@ class Character implements CanCallAPIInterface
             ];
         }
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'characters/names/', $parameters);
 
-        return $this->manager->call('GET', 'characters/names/', $parameters);
+        return $this->checkResponse($response, 200);
     }
 
     /*
@@ -65,11 +67,12 @@ class Character implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function info(integer $characterId): array
+    public function info(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'characters/'.$characterId.'/');
 
-        return $this->manager->call('GET', 'characters/'.$characterId.'/');
+        return $this->checkResponse($response, 200);
     }
 
     /*
@@ -79,11 +82,12 @@ class Character implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function corpHistory(integer $characterId): array
+    public function corpHistory(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'characters/'.$characterId.'/corporationhistory/');
 
-        return $this->manager->call('GET', 'characters/'.$characterId.'/corporationhistory/');
+        return $this->checkResponse($response, 200);
     }
 
     /*
@@ -95,13 +99,14 @@ class Character implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function cspa(integer $characterId, array $targetIds): array
+    public function cspa(int $characterId, array $targetIds): array
     {
         $this->checkScope(__FUNCTION__);
-
-        return $this->manager->call('GET', 'characters/'.$characterId.'/cspa/', null, [
+		$response = $this->manager->call('POST', 'characters/'.$characterId.'/cspa/', null, [
             'characters' => $targetIds,
         ]);
+
+        return $this->checkResponse($response, 201);
     }
 
     /*
@@ -111,10 +116,11 @@ class Character implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function portrait(integer $characterId): array
+    public function portrait(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'characters/'.$characterId.'/portrait/');
 
-        return $this->manager->call('GET', 'characters/'.$characterId.'/portrait/');
+        return $this->checkResponse($response, 200);
     }
 }

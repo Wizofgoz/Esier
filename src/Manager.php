@@ -4,6 +4,7 @@ namespace Esier;
 
 use Esier\Config\ConfigurationManager;
 use Esier\Exceptions\AuthorizationException;
+use Esier\Http\APIResponse;
 
 class Manager
 {
@@ -49,6 +50,8 @@ class Manager
         'contacts-write'           => 'esi-characters.write_contacts.v1',
         'clones-read'              => 'esi-clones.read_clones.v1',
         'corporation-read'         => 'esi-corporations.read_corporation_membership.v1',
+		'corporation-structure-read'  => 'esi-corporations.read_structures.v1',
+		'corporation-structure-write' => 'esi-corporations.write_structures.v1',
         'fittings-read'            => 'esi-fittings.read_fittings.v1',
         'fittings-write'           => 'esi-fittings.write_fittings.v1',
         'fleets-read'              => 'esi-fleets.read_fleet.v1',
@@ -426,9 +429,9 @@ class Manager
     *	@param array $body
     *	@param bool $authenticated
     *
-    *	@return array
+    *	@return Esier\Http\APIResponse
     */
-    public function call(string $method, string $uri, array $parameters = null, array $body = null, bool $authenticated = false): array
+    public function call(string $method, string $uri, array $parameters = null, array $body = null, bool $authenticated = false): APIResponse
     {
         $settings = [
             'headers' => [

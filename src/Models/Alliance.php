@@ -7,6 +7,7 @@ use Esier\Manager;
 class Alliance implements CanCallAPIInterface
 {
     use ChecksScopes;
+	use ChecksResponses;
 
     /*
     *	Instance of the manager object
@@ -24,8 +25,8 @@ class Alliance implements CanCallAPIInterface
         'listIds'         => null,
         'names'           => null,
         'get'             => null,
-        'getCorporations' => null,
-        'getIcons'        => null,
+        'corporations' => null,
+        'icons'        => null,
     ];
 
     /*
@@ -46,8 +47,9 @@ class Alliance implements CanCallAPIInterface
     public function listIds(): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'alliances/');
 
-        return $this->manager->call('GET', 'alliances/');
+        return $this->checkResponse($response, 200);
     }
 
     /*
@@ -66,8 +68,9 @@ class Alliance implements CanCallAPIInterface
             ];
         }
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'alliances/names/', $parameters);
 
-        return $this->manager->call('GET', 'alliances/names/', $parameters);
+        return $this->checkResponse($response, 200);
     }
 
     /*
@@ -77,11 +80,12 @@ class Alliance implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function get(integer $allianceId): array
+    public function get(int $allianceId): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'alliances/'.$allianceId.'/');
 
-        return $this->manager->call('GET', 'alliances/'.$allianceId.'/');
+        return $this->checkResponse($response, 200);
     }
 
     /*
@@ -91,11 +95,12 @@ class Alliance implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function getCorporations(integer $allianceId): array
+    public function corporations(int $allianceId): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'alliances/'.$allianceId.'/corporations/');
 
-        return $this->manager->call('GET', 'alliances/'.$allianceId.'/corporations/');
+        return $this->checkResponse($response, 200);
     }
 
     /*
@@ -105,10 +110,11 @@ class Alliance implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function getIcons(integer $allianceId): array
+    public function icons(int $allianceId): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'alliances/'.$allianceId.'/icons/');
 
-        return $this->manager->call('GET', 'alliances/'.$allianceId.'/icons');
+        return $this->checkResponse($response, 200);
     }
 }

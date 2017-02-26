@@ -4,7 +4,7 @@ namespace Esier\Http;
 
 use GuzzleHttp\Client;
 
-class GuzzleHttp
+class GuzzleHttp implements HttpInterface
 {
     /*
     *	Client instance
@@ -32,15 +32,17 @@ class GuzzleHttp
     *	@param string $uri
     *	@param array $settings
     *
-    *	@return array
+    *	@return Esier\Http\APIResponse
     */
-    public function request(string $method, string $uri, array $settings) : array
+    public function request(string $method, string $uri, array $settings) : APIResponse
     {
         $response = $this->client->request($method, $uri, $settings);
-        if ((string) $response->getBody() != '') {
-            return \json_decode((string) $response->getBody(), true);
-        }
 
-        return \json_decode((string) $response->getHeaders(), true);
+        return new APIResponse(
+			$response->getStatusCode(), 
+			$response->getReasonPhrase(),
+			$response->getHeaders(),
+			(string) $response->getBody()
+		);
     }
 }

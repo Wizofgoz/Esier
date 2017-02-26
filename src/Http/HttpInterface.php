@@ -1,10 +1,8 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Untitled Document</title>
-</head>
+<?php
 
-<body>
-</body>
-</html>
+namespace Esier\Http;
+
+interface HttpInterface
+{
+	public function request(string $method, string $uri, array $settings) : APIResponse;
+}

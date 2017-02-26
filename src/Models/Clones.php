@@ -7,6 +7,7 @@ use Esier\Manager;
 class Clones implements CanCallAPIInterface
 {
     use ChecksScopes;
+	use ChecksResponses;
 
     /*
     *	Instance of the manager object
@@ -21,7 +22,7 @@ class Clones implements CanCallAPIInterface
     *	@var array
     */
     protected $requiredScopes = [
-        'clones' => 'clones-read',
+        'get' => 'clones-read',
     ];
 
     /*
@@ -41,10 +42,11 @@ class Clones implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function clones(integer $characterId): array
+    public function get(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'characters/'.$characterId.'/clones/');
 
-        return $this->manager->call('GET', 'characters/'.$characterId.'/clones/');
+        return $this->checkResponse($response, 200);
     }
 }

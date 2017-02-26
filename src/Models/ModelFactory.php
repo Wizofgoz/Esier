@@ -61,11 +61,14 @@ final class ModelFactory
             case 'Clones':
                 return new Clones();
                 break;
-            case 'Contracts':
-                return new Contracts();
+            case 'Contacts':
+                return new Contacts();
                 break;
             case 'Corporation':
                 return new Corporation();
+                break;
+			case 'Dogma':
+                return new Dogma();
                 break;
             case 'Fittings':
                 return new Fittings();

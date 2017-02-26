@@ -7,6 +7,8 @@ use Esier\Manager;
 class Calendar implements CanCallAPIInterface
 {
     use ChecksScopes;
+	use ChecksResponses;
+	use ChecksParameters;
 
     /*
     *	Instance of the manager object
@@ -21,9 +23,9 @@ class Calendar implements CanCallAPIInterface
     *	@var array
     */
     protected $requiredScopes = [
-        'getEvents'      => 'calendar-read',
-        'getEventsInfo'  => 'calendar-read',
-        'respondToEvent' => 'calendar-write',
+        'events'      => 'calendar-read',
+        'info'  => 'calendar-read',
+        'respond' => 'calendar-write',
     ];
 
     /*
@@ -47,17 +49,14 @@ class Calendar implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function getEvents(integer $characterId, integer $fromEventId = null): array
+    public function events(int $characterId, int $fromEventId = null): array
     {
         $parameters = null;
-        if ($fromEventId !== null) {
-            $parameters = [
-                'from_event' => $fromEventId,
-            ];
-        }
+		$this->addParameter($parameters, 'from_event', $fromEventId);
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'characters/'.$characterId.'/calendar/', $parameters);
 
-        return $this->manager->call('GET', 'characters/'.$characterId.'/calendar/', $parameters);
+        return $this->checkResponse($response, 200);
     }
 
     /*
@@ -68,11 +67,12 @@ class Calendar implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function getEventInfo(integer $characterId, integer $eventId): array
+    public function info(int $characterId, int $eventId): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'characters/'.$characterId.'/calendar/'.$eventId.'/');
 
-        return $this->manager->call('GET', 'characters/'.$characterId.'/calendar/'.$eventId.'/');
+        return $this->checkResponse($response, 200);
     }
 
     /*
@@ -86,7 +86,7 @@ class Calendar implements CanCallAPIInterface
     *
     *	@throws InvalidArgumentException
     */
-    public function respondToEvent(integer $characterId, integer $eventId, string $response): array
+    public function respond(int $characterId, int $eventId, string $response): array
     {
         $availableResponses = [
             'accepted',
@@ -97,9 +97,10 @@ class Calendar implements CanCallAPIInterface
             throw new \InvalidArgumentException('Incorrect value passed for response');
         }
         $this->checkScope(__FUNCTION__);
-
-        return $this->manager->call('PUT', 'characters/'.$characterId.'/calendar/'.$eventId.'/', null, [
+		$response = $this->manager->call('PUT', 'characters/'.$characterId.'/calendar/'.$eventId.'/', null, [
             'response' => $response,
         ]);
+
+        return $this->checkResponse($response, 204);
     }
 }

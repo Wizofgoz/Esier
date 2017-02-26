@@ -3,6 +3,7 @@
 namespace Esier;
 
 use Esier\Models\ModelFactory;
+use Esier\Models\CanCallAPIInterface;
 
 class Esier
 {
@@ -68,7 +69,7 @@ class Esier
     *
     *	@throws \InvalidArgumentException
     */
-    public function __get(string $name)
+    public function __get(string $name): CanCallAPIInterface
     {
         if (!isset($this->models[$name])) {
             $this->models[$name] = ModelFactory::factory($name);
@@ -76,4 +77,16 @@ class Esier
 
         return $this->models[$name];
     }
+	
+	/*
+	*	Create a new data object of the given type
+	*
+	*	@param string $type
+	*
+	*	@return object
+	*/
+	public function create(string $type)
+	{
+		return DataFactory::factory($type);
+	}
 }

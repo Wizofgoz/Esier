@@ -7,6 +7,7 @@ use Esier\Manager;
 class Assets implements CanCallAPIInterface
 {
     use ChecksScopes;
+	use ChecksResponses;
 
     /*
     *	Instance of the manager object
@@ -21,7 +22,7 @@ class Assets implements CanCallAPIInterface
     *	@var array
     */
     protected $requiredScopes = [
-        'getAssets' => 'assets-read',
+        'get' => 'assets-read',
     ];
 
     /*
@@ -41,10 +42,11 @@ class Assets implements CanCallAPIInterface
     *
     *	@return array
     */
-    public function getAssets(integer $characterId): array
+    public function get(integer $characterId): array
     {
         $this->checkScope(__FUNCTION__);
+		$response = $this->manager->call('GET', 'characters/'.$characterId.'/assets/');
 
-        return $this->manager->call('GET', 'characters/'.$characterId.'/assets/');
+        return $this->checkResponse($response, 200);
     }
 }
