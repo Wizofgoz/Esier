@@ -7,7 +7,7 @@ use Esier\Manager;
 class Bookmarks implements CanCallAPIInterface
 {
     use ChecksScopes;
-	use ChecksResponses;
+    use ChecksResponses;
 
     /*
     *	Instance of the manager object
@@ -22,7 +22,7 @@ class Bookmarks implements CanCallAPIInterface
     *	@var array
     */
     protected $requiredScopes = [
-        'get' => 'bookmarks-read',
+        'get'       => 'bookmarks-read',
         'folders'   => 'bookmarks-read',
     ];
 
@@ -46,7 +46,7 @@ class Bookmarks implements CanCallAPIInterface
     public function get(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/bookmarks/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/bookmarks/');
 
         return $this->checkResponse($response, 200);
     }
@@ -61,7 +61,7 @@ class Bookmarks implements CanCallAPIInterface
     public function folders(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/bookmarks/folders/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/bookmarks/folders/');
 
         return $this->checkResponse($response, 200);
     }

@@ -39,10 +39,10 @@ class GuzzleHttp implements HttpInterface
         $response = $this->client->request($method, $uri, $settings);
 
         return new APIResponse(
-			$response->getStatusCode(), 
-			$response->getReasonPhrase(),
-			$response->getHeaders(),
-			(string) $response->getBody()
-		);
+            $response->getStatusCode(),
+            $response->getReasonPhrase(),
+            $response->getHeaders(),
+            (string) $response->getBody()
+        );
     }
 }

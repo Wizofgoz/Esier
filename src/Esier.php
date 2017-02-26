@@ -2,8 +2,8 @@
 
 namespace Esier;
 
-use Esier\Models\ModelFactory;
 use Esier\Models\CanCallAPIInterface;
+use Esier\Models\ModelFactory;
 
 class Esier
 {
@@ -77,16 +77,16 @@ class Esier
 
         return $this->models[$name];
     }
-	
-	/*
-	*	Create a new data object of the given type
-	*
-	*	@param string $type
-	*
-	*	@return object
-	*/
-	public function create(string $type)
-	{
-		return DataFactory::factory($type);
-	}
+
+    /*
+    *	Create a new data object of the given type
+    *
+    *	@param string $type
+    *
+    *	@return object
+    */
+    public function create(string $type)
+    {
+        return DataFactory::factory($type);
+    }
 }

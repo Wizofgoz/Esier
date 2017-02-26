@@ -7,7 +7,7 @@ use Esier\Manager;
 class Character implements CanCallAPIInterface
 {
     use ChecksScopes;
-	use ChecksResponses;
+    use ChecksResponses;
 
     /*
     *	Instance of the manager object
@@ -55,7 +55,7 @@ class Character implements CanCallAPIInterface
             ];
         }
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/names/', $parameters);
+        $response = $this->manager->call('GET', 'characters/names/', $parameters);
 
         return $this->checkResponse($response, 200);
     }
@@ -70,7 +70,7 @@ class Character implements CanCallAPIInterface
     public function info(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/');
 
         return $this->checkResponse($response, 200);
     }
@@ -85,7 +85,7 @@ class Character implements CanCallAPIInterface
     public function corpHistory(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/corporationhistory/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/corporationhistory/');
 
         return $this->checkResponse($response, 200);
     }
@@ -102,7 +102,7 @@ class Character implements CanCallAPIInterface
     public function cspa(int $characterId, array $targetIds): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('POST', 'characters/'.$characterId.'/cspa/', null, [
+        $response = $this->manager->call('POST', 'characters/'.$characterId.'/cspa/', null, [
             'characters' => $targetIds,
         ]);
 
@@ -119,7 +119,7 @@ class Character implements CanCallAPIInterface
     public function portrait(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-		$response = $this->manager->call('GET', 'characters/'.$characterId.'/portrait/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/portrait/');
 
         return $this->checkResponse($response, 200);
     }
