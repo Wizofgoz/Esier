@@ -1,10 +1,10 @@
 <?php
 
-namespace Esier\Models;
+namespace Esier\Models\Endpoints;
 
 use Esier\Manager;
 
-class Clones implements CanCallAPIInterface
+class Assets implements CanCallAPIInterface
 {
     use ChecksScopes;
     use ChecksResponses;
@@ -22,7 +22,7 @@ class Clones implements CanCallAPIInterface
     *	@var array
     */
     protected $requiredScopes = [
-        'get' => 'clones-read',
+        'get' => 'assets-read',
     ];
 
     /*
@@ -36,16 +36,16 @@ class Clones implements CanCallAPIInterface
     }
 
     /*
-    *	A list of the character's clones
+    *	Return a list of the characters assets
     *
     *	@param int $characterId
     *
     *	@return array
     */
-    public function get(int $characterId): array
+    public function get(integer $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-        $response = $this->manager->call('GET', 'characters/'.$characterId.'/clones/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/assets/');
 
         return $this->checkResponse($response, 200);
     }

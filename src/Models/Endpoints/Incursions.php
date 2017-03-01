@@ -1,6 +1,6 @@
 <?php
 
-namespace Esier\Models;
+namespace Esier\Models\Endpoints;
 
 class Incursions implements CanCallAPIInterface
 {

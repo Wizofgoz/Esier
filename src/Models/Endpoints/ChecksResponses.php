@@ -1,6 +1,6 @@
 <?php
 
-namespace Esier\Models;
+namespace Esier\Models\Endpoints;
 
 use Esier\Exceptions\ResponseException;
 use Esier\Http\APIResponse;

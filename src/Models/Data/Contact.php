@@ -4,14 +4,28 @@ namespace Esier\Models\Data;
 
 class Contact
 {
+	/*
+    *
+    *
+    *
+    */
+    private $contactId;
+	
     /*
     *
     *
     *
     */
-    private $standing = 0.0;
+    private $standing;
 
     /*
+    *
+    *
+    *
+    */
+    private $watched;
+	
+	/*
     *
     *
     *
@@ -23,15 +37,12 @@ class Contact
     *
     *
     */
-    private $watched = false;
-
-    /*
-    *
-    *
-    *
-    */
-    public function __construct()
+    public function __construct(int $contactId, float $standing = 0.0, bool $watched = false, int $labelId = null)
     {
+		$this->contactId = $contactId;
+		$this->standing = $standing;
+		$this->watched = $watched;
+		$this->labelId = $labelId;
     }
 
     /*
@@ -39,11 +50,9 @@ class Contact
     *
     *
     */
-    public function setStanding(float $standing): self
+    public function setStanding(float $standing)
     {
         $this->standing = $standing;
-
-        return $this;
     }
 
     /*
@@ -51,11 +60,9 @@ class Contact
     *
     *
     */
-    public function setLabel(int $labelId): self
+    public function setLabel(int $labelId)
     {
         $this->labelId = $labelId;
-
-        return $this;
     }
 
     /*
@@ -63,11 +70,9 @@ class Contact
     *
     *
     */
-    public function setWatch(bool $watched): self
+    public function setWatch(bool $watched)
     {
         $this->watched = $watched;
-
-        return $this;
     }
 
     /*

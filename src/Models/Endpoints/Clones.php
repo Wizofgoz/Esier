@@ -1,10 +1,10 @@
 <?php
 
-namespace Esier\Models;
+namespace Esier\Models\Endpoints;
 
 use Esier\Manager;
 
-class Bookmarks implements CanCallAPIInterface
+class Clones implements CanCallAPIInterface
 {
     use ChecksScopes;
     use ChecksResponses;
@@ -22,8 +22,7 @@ class Bookmarks implements CanCallAPIInterface
     *	@var array
     */
     protected $requiredScopes = [
-        'get'       => 'bookmarks-read',
-        'folders'   => 'bookmarks-read',
+        'get' => 'clones-read',
     ];
 
     /*
@@ -37,7 +36,7 @@ class Bookmarks implements CanCallAPIInterface
     }
 
     /*
-    *	List your character's personal bookmarks
+    *	A list of the character's clones
     *
     *	@param int $characterId
     *
@@ -46,22 +45,7 @@ class Bookmarks implements CanCallAPIInterface
     public function get(int $characterId): array
     {
         $this->checkScope(__FUNCTION__);
-        $response = $this->manager->call('GET', 'characters/'.$characterId.'/bookmarks/');
-
-        return $this->checkResponse($response, 200);
-    }
-
-    /*
-    *	List your character's personal bookmark folders
-    *
-    *	@param int $characterId
-    *
-    *	@return array
-    */
-    public function folders(int $characterId): array
-    {
-        $this->checkScope(__FUNCTION__);
-        $response = $this->manager->call('GET', 'characters/'.$characterId.'/bookmarks/folders/');
+        $response = $this->manager->call('GET', 'characters/'.$characterId.'/clones/');
 
         return $this->checkResponse($response, 200);
     }

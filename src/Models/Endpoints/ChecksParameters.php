@@ -1,8 +1,8 @@
 <?php
 
-namespace Esier\Models;
+namespace Esier\Models\Endpoints;
 
-trait ChecksParamters
+trait ChecksParameters
 {
     /*
     *	Checks that a parameter should be added to the given array and adds it
