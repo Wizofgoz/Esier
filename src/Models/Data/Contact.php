@@ -4,13 +4,13 @@ namespace Esier\Models\Data;
 
 class Contact
 {
-	/*
+    /*
     *
     *
     *
     */
     private $contactId;
-	
+
     /*
     *
     *
@@ -24,8 +24,8 @@ class Contact
     *
     */
     private $watched;
-	
-	/*
+
+    /*
     *
     *
     *
@@ -39,10 +39,10 @@ class Contact
     */
     public function __construct(int $contactId, float $standing = 0.0, bool $watched = false, int $labelId = null)
     {
-		$this->contactId = $contactId;
-		$this->standing = $standing;
-		$this->watched = $watched;
-		$this->labelId = $labelId;
+        $this->contactId = $contactId;
+        $this->standing = $standing;
+        $this->watched = $watched;
+        $this->labelId = $labelId;
     }
 
     /*
