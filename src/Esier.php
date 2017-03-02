@@ -3,7 +3,7 @@
 namespace Esier;
 
 use Esier\Models\CanCallAPIInterface;
-use Esier\Models\ModelFactory;
+use Esier\Models\EndpointFactory;
 
 class Esier
 {
@@ -22,11 +22,11 @@ class Esier
     private $manager;
 
     /*
-    *	Array of instanciated models
+    *	Array of instanciated endpoints
     *
     *	@var array
     */
-    private $models = [];
+    private $endpoints = [];
 
     /*
     *	Initialize the library
@@ -71,22 +71,10 @@ class Esier
     */
     public function __get(string $name): CanCallAPIInterface
     {
-        if (!isset($this->models[$name])) {
-            $this->models[$name] = ModelFactory::factory($name);
+        if (!isset($this->endpoints[$name])) {
+            $this->endpoints[$name] = EndpointFactory::factory($name);
         }
 
-        return $this->models[$name];
-    }
-
-    /*
-    *	Create a new data object of the given type
-    *
-    *	@param string $type
-    *
-    *	@return object
-    */
-    public function create(string $type)
-    {
-        return DataFactory::factory($type);
+        return $this->endpoints[$name];
     }
 }
