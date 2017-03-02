@@ -17,39 +17,39 @@ final class EndpointFactory
         'Sov'  => 'Sovereignty',
         'UI'   => 'UserInterface',
     ];
-	
-	/*
-	*	Mapping of classes to full class names
-	*
-	*	@var array
-	*/
-	const MODELS = [
-		'Alliance' => \Esier\Models\Endpoints\Alliance::class,
-		'Assets' => \Esier\Models\Endpoints\Assets::class,
-		'Bookmarks' => \Esier\Models\Endpoints\Bookmarks::class,
-		'Calendar' => \Esier\Models\Endpoints\Calendar::class,
-		'Character' => \Esier\Models\Endpoints\Character::class,
-		'Clones' => \Esier\Models\Endpoints\Clones::class,
-		'Contacts' => \Esier\Models\Endpoints\Contacts::class,
-		'Corporation' => \Esier\Models\Endpoints\Corporation::class,
-		'Dogma' => \Esier\Models\Endpoints\Dogma::class,
-		'Fittings' => \Esier\Models\Endpoints\Fittings::class,
-		'Fleet' => \Esier\Models\Endpoints\Fleet::class,
-		'Incursions' => \Esier\Models\Endpoints\Incursions::class,
-		'Industry' => \Esier\Models\Endpoints\Industry::class,
-		'Insurance' => \Esier\Models\Endpoints\Insurance::class,
-		'KillMails' => \Esier\Models\Endpoints\KillMails::class,
-		'Location' => \Esier\Models\Endpoints\Location::class,
-		'Market' => \Esier\Models\Endpoints\Market::class,
-		'PlanetaryInteraction' => \Esier\Models\Endpoints\PlanetaryInteraction::class,
-		'Search' => \Esier\Models\Endpoints\Search::class,
-		'Skills' => \Esier\Models\Endpoints\Skills::class,
-		'Sovereignty' => \Esier\Models\Endpoints\Sovereignty::class,
-		'Universe' => \Esier\Models\Endpoints\Universe::class,
-		'UserInterface' => \Esier\Models\Endpoints\UserInterface::class,
-		'Wallet' => \Esier\Models\Endpoints\Wallet::class,
-		'Wars' => \Esier\Models\Endpoints\Wars::class
-	];
+
+    /*
+    *	Mapping of classes to full class names
+    *
+    *	@var array
+    */
+    const MODELS = [
+        'Alliance'             => \Esier\Models\Endpoints\Alliance::class,
+        'Assets'               => \Esier\Models\Endpoints\Assets::class,
+        'Bookmarks'            => \Esier\Models\Endpoints\Bookmarks::class,
+        'Calendar'             => \Esier\Models\Endpoints\Calendar::class,
+        'Character'            => \Esier\Models\Endpoints\Character::class,
+        'Clones'               => \Esier\Models\Endpoints\Clones::class,
+        'Contacts'             => \Esier\Models\Endpoints\Contacts::class,
+        'Corporation'          => \Esier\Models\Endpoints\Corporation::class,
+        'Dogma'                => \Esier\Models\Endpoints\Dogma::class,
+        'Fittings'             => \Esier\Models\Endpoints\Fittings::class,
+        'Fleet'                => \Esier\Models\Endpoints\Fleet::class,
+        'Incursions'           => \Esier\Models\Endpoints\Incursions::class,
+        'Industry'             => \Esier\Models\Endpoints\Industry::class,
+        'Insurance'            => \Esier\Models\Endpoints\Insurance::class,
+        'KillMails'            => \Esier\Models\Endpoints\KillMails::class,
+        'Location'             => \Esier\Models\Endpoints\Location::class,
+        'Market'               => \Esier\Models\Endpoints\Market::class,
+        'PlanetaryInteraction' => \Esier\Models\Endpoints\PlanetaryInteraction::class,
+        'Search'               => \Esier\Models\Endpoints\Search::class,
+        'Skills'               => \Esier\Models\Endpoints\Skills::class,
+        'Sovereignty'          => \Esier\Models\Endpoints\Sovereignty::class,
+        'Universe'             => \Esier\Models\Endpoints\Universe::class,
+        'UserInterface'        => \Esier\Models\Endpoints\UserInterface::class,
+        'Wallet'               => \Esier\Models\Endpoints\Wallet::class,
+        'Wars'                 => \Esier\Models\Endpoints\Wars::class,
+    ];
 
     /*
     *	Resolve alias if given and return full name
@@ -75,11 +75,11 @@ final class EndpointFactory
     public static function factory(string $type): CanCallAPIInterface
     {
         $name = self::resolveAlias($type);
-        if(!in_array($name, array_keys(self::MODELS)))
-		{
+        if (!in_array($name, array_keys(self::MODELS))) {
             throw new \InvalidArgumentException('Unknown model type given');
         }
-		$class = self::MODELS[$name];
-		return new $class();
+        $class = self::MODELS[$name];
+
+        return new $class();
     }
 }
