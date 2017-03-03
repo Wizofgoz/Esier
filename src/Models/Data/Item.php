@@ -34,7 +34,7 @@ class Item
     *
     *	@return void
     */
-    public function __construct(int $itemId, int $quantity = 1, int $flag = 0)
+    public function __construct(int $itemId = null, int $quantity = 1, int $flag = 0)
     {
         $this->itemId = $itemId;
         $this->quantity = $quantity;

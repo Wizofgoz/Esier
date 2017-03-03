@@ -3,12 +3,14 @@
 namespace Esier\Models\Endpoints;
 
 use Esier\Manager;
+use Esier\Models\Data\Contact;
+use Esier\Models\Data\ContactList;
+use Esier\Models\Data\ContactSettings;
 
 class Contacts implements CanCallAPIInterface
 {
     use ChecksScopes;
     use ChecksResponses;
-    use ChecksParameters;
 
     /*
     *	Instance of the manager object
@@ -45,84 +47,92 @@ class Contacts implements CanCallAPIInterface
     *
     *	@param int $characterId
     *
-    *	@return array
+    *	@return Esier\Models\Data\ContactList
+	*
+	*	@throws Esier\Exceptions\ResponseException
     */
-    public function get(integer $characterId): array
+    public function get(integer $characterId): ContactList
     {
         $this->checkScope(__FUNCTION__);
         $response = $this->manager->call('GET', 'characters/'.$characterId.'/contacts/');
+		$contacts = $this->checkResponse($response, 200);
+		$list = new ContactList();
+		foreach($contacts as $contact)
+		{
+			$list->addContact(new Contact(
+				$contact['contact_id'], 
+				$contact['standing'], 
+				$contact['is_watched'], 
+				$contact['label_id']
+			));
+		}
 
-        return $this->checkResponse($response, 200);
+        return $list;
     }
 
     /*
     *	Bulk delete contacts
     *
     *	@param int $characterId
-    *	@param array $targetIds
+    *	@param Esier\Models\Data\ContactList $contacts
     *
-    *	@return array
+    *	@return bool
+	*
+	*	@throws Esier\Exceptions\ResponseException
     */
-    public function delete(integer $characterId, array $targetIds): array
+    public function delete(integer $characterId, ContactList $contacts): bool
     {
         $this->checkScope(__FUNCTION__);
         $response = $this->manager->call('DELETE', 'characters/'.$characterId.'/contacts/', null, [
-            'contact_ids' => $targetIds,
+            'contact_ids' => $contacts->getIds(),
         ]);
+		$this->checkResponse($response, 204);
 
-        return $this->checkResponse($response, 204);
+        return true;
     }
 
     /*
     *	Bulk add contacts with same settings
     *
     *	@param int $characterId
-    *	@param array $targetIds
-    *	@param double $standing
-    *	@param bool $watch
-    *	@param int $labelId
+    *	@param Esier\Models\Data\ContactList $contacts
+	*	@param Esier\Models\Data\ContactSettings $settings
     *
-    *	@return array
+    *	@return bool
+	*
+	*	@throws Esier\Exceptions\ResponseException
     */
-    public function add(integer $characterId, array $targetIds, double $standing, bool $watch = null, integer $labelId = null): array
+    public function add(integer $characterId, ContactList $contacts, ContactSettings $settings): bool
     {
-        $parameters = [
-            'standing' => $standing,
-        ];
-        $this->addParameter($parameters, 'watched', $watch);
-        $this->addParameter($parameters, 'label_id', $labelId);
         $this->checkScope(__FUNCTION__);
-        $response = $this->manager->call('POST', 'characters/'.$characterId.'/contacts/', $parameters, [
-            'contact_ids' => $targetIds,
+        $response = $this->manager->call('POST', 'characters/'.$characterId.'/contacts/', $settings->toArray(), [
+            'contact_ids' => $contacts->getIds(),
         ]);
+		$this->checkResponse($response, 201);
 
-        return $this->checkResponse($response, 201);
+        return true;
     }
 
     /*
     *	Bulk edit contacts with same settings
     *
     *	@param int $characterId
-    *	@param array $targetIds
-    *	@param double $standing
-    *	@param bool $watch
-    *	@param int $labelId
+    *	@param Esier\Models\Data\ContactList $contacts
+	*	@param Esier\Models\Data\ContactSettings $settings
     *
-    *	@return array
+    *	@return bool
+	*
+	*	@throws Esier\Exceptions\ResponseException
     */
-    public function edit(integer $characterId, array $targetIds, double $standing, bool $watch = null, integer $labelId = null): array
+    public function edit(integer $characterId, ContactList $contacts, ContactSettings $settings): bool
     {
-        $parameters = [
-            'standing' => $standing,
-        ];
-        $this->addParameter($parameters, 'watched', $watch);
-        $this->addParameter($parameters, 'label_id', $labelId);
         $this->checkScope(__FUNCTION__);
-        $response = $this->manager->call('PUT', 'characters/'.$characterId.'/contacts/', $parameters, [
-            'contact_ids' => $targetIds,
+        $response = $this->manager->call('PUT', 'characters/'.$characterId.'/contacts/', $settings->toArray(), [
+            'contact_ids' => $contacts->getIds(),
         ]);
+		$this->checkResponse($response, 204);
 
-        return $this->checkResponse($response, 204);
+        return true;
     }
 
     /*
@@ -131,6 +141,8 @@ class Contacts implements CanCallAPIInterface
     *	@param int $characterId
     *
     *	@return array
+	*
+	*	@throws Esier\Exceptions\ResponseException
     */
     public function labels(integer $characterId): array
     {

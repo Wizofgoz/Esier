@@ -27,6 +27,7 @@ class ArraySession implements CanStoreInterface
     */
     public function __construct(array $config = [])
     {
+		$this->config = $config;
     }
 
     /*
