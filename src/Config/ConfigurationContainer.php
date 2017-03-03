@@ -26,6 +26,9 @@ class ConfigurationContainer
         'Session' => [
             'handler',
         ],
+		'Http' => [
+			'handler',
+		],
     ];
 
     /*
