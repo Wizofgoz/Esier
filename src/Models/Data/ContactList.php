@@ -105,19 +105,19 @@ class ContactList implements \Countable, \Iterator
     {
         return isset($this->contacts[$this->currentIndex]);
     }
-	
-	/*
-	*	Return IDs of all contacts in the list
-	*
-	*	@return array
-	*/
-	public function getIds(): array
-	{
-		$ids = [];
-		foreach($this->contacts as $contact)
-		{
-			$ids[] = $contact->getId();
-		}
-		return $ids;
-	}
+
+    /*
+    *	Return IDs of all contacts in the list
+    *
+    *	@return array
+    */
+    public function getIds(): array
+    {
+        $ids = [];
+        foreach ($this->contacts as $contact) {
+            $ids[] = $contact->getId();
+        }
+
+        return $ids;
+    }
 }

@@ -36,11 +36,11 @@ class Contact
     *	Initialize object
     *
     *	@param int $contactId
-	*	@param float $standing
-	*	@param bool $watched
-	*	@param int $labelId
-	*
-	*	@return void
+    *	@param float $standing
+    *	@param bool $watched
+    *	@param int $labelId
+    *
+    *	@return void
     */
     public function __construct(int $contactId = null, float $standing = 0.0, bool $watched = false, int $labelId = null)
     {
@@ -54,8 +54,8 @@ class Contact
     *	Set the standing
     *
     *	@param float $standing
-	*
-	*	@return void
+    *
+    *	@return void
     */
     public function setStanding(float $standing)
     {
@@ -66,8 +66,8 @@ class Contact
     *	Set the labelID
     *
     *	@param int $labelId
-	*
-	*	@return void
+    *
+    *	@return void
     */
     public function setLabel(int $labelId)
     {
@@ -78,8 +78,8 @@ class Contact
     *	Set the watch setting
     *
     *	@param bool $watched
-	*
-	*	@return void
+    *
+    *	@return void
     */
     public function setWatch(bool $watched)
     {
@@ -115,14 +115,14 @@ class Contact
     {
         return $this->watched;
     }
-	
-	/*
-	*	Return the ID of the contact
-	*
-	*	@return int|null
-	*/
-	public function getId()
-	{
-		return $this->contactId;
-	}
+
+    /*
+    *	Return the ID of the contact
+    *
+    *	@return int|null
+    */
+    public function getId()
+    {
+        return $this->contactId;
+    }
 }
