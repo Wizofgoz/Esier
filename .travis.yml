@@ -4,3 +4,7 @@ php:
   - '7.1'
   - hhvm
   - nightly
+addons:
+    code_climate:
+        repo_token: 458243278092b0bf11e6a14a5ddc13237eef4e865354ff40e136a62e69452b9d
+before_script: composer install
