@@ -6,9 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigurationContainer extends TestCase
 {
-	public function testEmptyConfiguration()
-	{
-		$container = new \Esier\Config\ConfigurationContainer([]);
-		$this->expectException(\Esier\Exceptions\InvalidConfigurationException::class);
-	}
+    public function testEmptyConfiguration()
+    {
+        $container = new \Esier\Config\ConfigurationContainer([]);
+        $this->expectException(\Esier\Exceptions\InvalidConfigurationException::class);
+    }
 }
