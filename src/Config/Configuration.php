@@ -5,7 +5,7 @@ return [
         'client_id'       => '',
         'secret_key'      => '',
         'callback_url'    => '',
-        'data_source'     => 'tranquility',    //	can be either tranquility or singularity
+        'data_source'     => 'tranquility',    // can be either tranquility or singularity
         'default_scopes'  => [
             'assets-read',
             'bookmarks-read',
@@ -49,7 +49,8 @@ return [
         'Handler' => \Esier\Log\NullLog::class,
         'NullLog' => null,
         'FileLog' => [
-            '',
+            'location' => realpath(__DIR__.'/../Log/Logs/'),
+			'rotation' => 'daily',	// can be daily, monthly, or never
         ],
     ],
 
@@ -75,7 +76,7 @@ return [
             'name'   => 'esier',    //	prefix for session cookie
             'limit'  => 0,        //	lifetime of session cookie (in seconds)
             'path'   => '/',        //	path on domain that session cookie is accessible
-            'domain' => null,    //	domain that session cookieis visible to
+            'domain' => null,    //	domain that session cookie is visible to
             'secure' => null,    //	set to true to only allow cookie to be sent over secure connections
         ],
     ],

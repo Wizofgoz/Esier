@@ -322,7 +322,7 @@ class Manager
             ],
         ]);
         if (!isset($data['access_token'])) {
-            throw new AuthorizationException('');
+            throw new AuthorizationException('Incorrect response from API');
         }
         $this->setCurrentToken($data['access_token']);
         $this->setRefreshToken($data['refresh_token']);
