@@ -50,7 +50,7 @@ return [
         'NullLog' => null,
         'FileLog' => [
             'location' => realpath(__DIR__.'/../Log/Logs/'),
-			'rotation' => 'daily',	// can be daily, monthly, or never
+            'rotation' => 'daily',    // can be daily, monthly, or never
         ],
     ],
 
