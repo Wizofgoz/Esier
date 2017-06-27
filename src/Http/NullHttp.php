@@ -4,7 +4,7 @@ namespace Esier\Http;
 
 class NullHttp implements HttpInterface
 {
-	/*
+    /*
     *	Handle a request with the client
     *
     *	@param string $method
@@ -13,8 +13,8 @@ class NullHttp implements HttpInterface
     *
     *	@return Esier\Http\APIResponse
     */
-	public function request(string $method, string $uri, array $settings) : APIResponse
-	{
-		return new APIResponse(200, 'Success', [], '');
-	}
+    public function request(string $method, string $uri, array $settings) : APIResponse
+    {
+        return new APIResponse(200, 'Success', [], '');
+    }
 }
